@@ -270,7 +270,7 @@ function buildBenchmark(state: QuickstartState): ComparableBenchmark {
   const archetypeLabel = meta ? meta.cardTitle : 'your role';
 
   const reasoning = matchReasoning(state, archetypeLabel)[matchLevel];
-  const whatThisMeans = whatItMeans(state, archetypeLabel)[matchLevel];
+  const whatThisMeans = whatItMeans(state)[matchLevel];
 
   return {
     matchLevel,
@@ -296,8 +296,7 @@ function matchReasoning(
 }
 
 function whatItMeans(
-  state: QuickstartState,
-  archetypeLabel: string
+  state: QuickstartState
 ): Record<ComparableBenchmark['matchLevel'], string> {
   const workerName = state.archetype ? archetypeMeta(state.archetype).workerName : 'a vertical InstaWorker';
 
