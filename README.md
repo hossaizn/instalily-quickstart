@@ -30,7 +30,7 @@ Opens at `http://localhost:5173/`.
 
 ## Repo structure
 
-```
+```text
 src/
 ├── App.tsx                       # Router (/ = hub, /quickstart = demo)
 ├── pages/
