@@ -74,68 +74,19 @@ These are settled. Do not reopen unless a downstream issue forces it.
 | D10 | The Quickstart explicitly tells users "the production version, with internal access to actual customer data, would do this better" | Reframes the public-data limitation as a product-thinking-out-loud signal. | 2026-06-27 |
 | D11 | Section title: "What the public case study tells us" (not "How comparable is your situation?") | We judge the benchmark's applicability, not the user. | 2026-06-27 |
 | D12 | Application hub leads with anticipated objection + defense (parallel path, not replacement) | The strongest single signal that Zul thinks like a PM. | 2026-06-27 |
+| D13 | **Step 2 dropdowns: shared labels, archetype × pick-specific output copy.** Parts + digital-in-system + rule-based produces different output narrative than Claims + digital-in-system + rule-based, and dramatically different from Service + mostly-phone + judgment. Copy/template rewrite, not UX rewrite. | Closes OQ1. Real tangible weight to every dropdown pick. | 2026-06-27 |
+| D14 | **Add "Email this spec to your boss" as the topmost CTA above Book a Demo + Copy.** Opens mailto: with subject + body pre-filled with the spec. | Closes OQ2. Highest-leverage conversion mechanic — the spec gets sent to a second stakeholder without InstaLILY paying for it. | 2026-06-27 |
+| D15 | NO shareable visual card for v1. | Closes OQ3. Defer to v2 roadmap (section 16). | 2026-06-27 |
+| D16 | Discovery checklist stays on the spec page. Not a separate downloadable PDF for v1. | Closes OQ4. Defer to v2 roadmap. | 2026-06-27 |
+| D17 | NO per-section confidence indicators in v1. The benchmark match pill is the only confidence visualization. | Closes OQ5. Avoid over-engineering. Defer to v2. | 2026-06-27 |
 
 ---
 
 ## 5. Open questions (haven't proven themselves yet)
 
-These are NOT ratified. We will resolve them in this spec's review pass, or in the next iteration of the artifact.
+All open questions from v0.1 (OQ1–OQ5) have been resolved in section 4 (D13–D17). New open questions surfacing during build or review go here.
 
-### OQ1 — Are the Step 2 dropdowns (data state + decision complexity) generic or archetype-specific?
-
-**Currently:** Shared options across all archetypes.
-- Data state: digital-in-system / digital-in-email / mixed / phone-paper
-- Decision complexity: rule-based / judgment / mixed
-
-**The argument for shared:** These are universal concepts. "Digital in system" means the same thing for a Parts Counter as for a Claims Analyst.
-
-**The argument for archetype-specific:** Per Zul's feedback, "the answers being picked need to have real tangible weightage in showcasing the output." Generic options that produce generic narrative ≠ tangible weight.
-
-**Proposed resolution:** Keep the option *labels* shared (because they really are universal), but make the *output text* genuinely archetype × pick specific. So Parts + digital-in-system + rule-based produces different copy than Claims + digital-in-system + rule-based, and dramatically different from Service + mostly-phone + judgment. This is a copy/templates rewrite, not a UX rewrite.
-
-→ **Needs decision in review.**
-
-### OQ2 — Should the "Copy the spec" CTA be promoted to equal weight with "Book a demo"?
-
-**Currently:** Book a Demo is the primary CTA. Copy is secondary.
-
-**The argument for equal weight:** The spec is something the user can SHARE with their boss. That sharing IS the conversion mechanic. For users who aren't ready to book a sales call, copying the spec to email to their boss is the more honest next step — and the spec, once shared, is its own marketing.
-
-**The argument against:** Two equal-weight CTAs dilute. Better to make one clearly primary.
-
-**Proposed resolution:** Keep Book a Demo primary visually, BUT add a third, low-friction option above both: *"Email this spec to your boss"* — opens a mailto with subject + body pre-filled with the spec. This is the highest-leverage conversion mechanic we haven't shipped.
-
-→ **Needs decision in review.**
-
-### OQ3 — Should the output include a "compelling visual" that's worth sharing on LinkedIn?
-
-The spec output is text-heavy. If someone wants to share it on LinkedIn ("look what I made for our team"), there's nothing visual to share — just a markdown blob.
-
-**Possible add:** A printable / screenshot-friendly "InstaWorker spec card" image that auto-generates from the user's inputs. They take a screenshot, post it on LinkedIn, the demo URL gets eyeballs.
-
-This would significantly enhance share-worthiness but adds non-trivial scope.
-
-→ **Needs decision in review. Defaulting to NO for v1.**
-
-### OQ4 — Where exactly do the discovery checklist items live in the funnel?
-
-Currently they're a list on the spec page. They could ALSO:
-- Be a downloadable PDF ("Discovery checklist for [your archetype] — share this with InstaLILY before the demo so they come prepared")
-- Be the body of the pre-filled email to InstaLILY
-
-The PDF version makes the discovery list a takeaway artifact, not just on-page content. Increases share-worthiness.
-
-→ **Needs decision in review. Defaulting to "stay on page" for v1.**
-
-### OQ5 — Should there be a confidence indicator per output section?
-
-Right now the benchmark section has a match-level pill. But the workflow steps narrative, the InstaBrain modules, and the integrations have no confidence framing — they read as authoritative.
-
-**The honest fix:** Each section gets a small "How confident we are" callout. Workflow steps: "High confidence — derived from your direct inputs." InstaBrain modules: "Medium-high — derived from InstaLILY's public architecture." Integrations: "High — your direct pick."
-
-**The risk:** Over-engineering. Could become noise.
-
-→ **Needs decision in review. Defaulting to NO for v1.**
+*(no open questions at this time)*
 
 ---
 
@@ -495,20 +446,57 @@ This means **the polish, the specificity, and the credibility of the spec page i
 
 ---
 
+## 16. Vision: the Quickstart IS an InstaWorker
+
+A meta-insight surfaced during spec review (credit: Zul, 2026-06-27): the Quickstart, taken to production, is itself an InstaWorker.
+
+**The structural argument:** It does what every InstaWorker does. It takes structured input from a frontline operator, applies a vertical-aware knowledge layer, and produces a structured, vertical-specific output that fits into an existing workflow (in this case, InstaLILY's sales-to-deployment funnel).
+
+**If InstaLILY shipped this as a real product, it would be called the Onboarding InstaWorker:**
+
+| Concept | v1 (this artifact) | Production version |
+|---|---|---|
+| Knowledge layer | 4 hand-curated archetype templates | Real InstaBrain trained on InstaLILY's deployed customer base — every shipped InstaWorker becomes a comparable lookup |
+| Comparable benchmark | The one public SRS case study | Vector-similarity match against actual customer outcomes (with permission) |
+| Output specificity | Templated narrative from user inputs | LLM-composed narrative with real internal-deployment references |
+| Discovery checklist | Static per archetype | Dynamic, drawing from what InstaLILY's own discovery process actually surfaces |
+| Conversion | "Email to your boss" + "Book a demo" | All of the above, plus auto-routing the prospect to the closest-fit AE based on archetype × vertical × volume |
+| Eat-their-own-dog-food | Concept only | The first InstaWorker built for InstaLILY's own sales motion |
+
+**Why this framing matters for the application:**
+
+If we're submitting this as a Product Associate artifact, we're not just showing "I built a tool." We're showing "I understand your product so deeply that I built the first version of an InstaWorker you don't yet have, scoped for your own sales motion, using your published architecture." That's a meaningfully different level of demonstration.
+
+This vision belongs in two places:
+1. The "production version" callout in the spec page (already there, can be sharpened post-spec review)
+2. The application-facing PRD's roadmap section (when we write it, it should explicitly frame the Quickstart as the wedge for an Onboarding InstaWorker product line — InstaLILY's own dogfood story)
+
+**Roadmap (v2 and beyond, if this were a real InstaLILY product):**
+
+- **v1 (this artifact):** Templated, 4 archetypes, public benchmark only
+- **v2:** Add the deferred OQ3/OQ4/OQ5 items — shareable visual card, downloadable discovery PDF, per-section confidence indicators
+- **v3:** Real InstaBrain integration — internal customer comparables, vector-similarity matching
+- **v4:** LLM-composed output instead of templated, with citations to specific internal deployments
+- **v5:** Auto-routing of the qualified prospect to the right AE based on archetype × volume × vertical, with the spec attached
+- **v6:** A feedback loop — the prospect's eventual outcome data flows back into the InstaBrain, making every subsequent Quickstart better
+
+---
+
 ## Open: Review checklist for Zul
 
 Please walk through these before approving:
 
-- [ ] Decisions in section 4 — anything you want to overturn?
-- [ ] Open questions in section 5 — make a call on each (OQ1, OQ2, OQ3, OQ4, OQ5)
+- [ ] Decisions in section 4 — anything you want to overturn? (D13–D17 are newly added)
+- [ ] Open questions section 5 — clean (all resolved)
 - [ ] User journeys in section 6 — any archetype that doesn't feel right? Any task or output option missing?
 - [ ] Benchmark scoring in section 9 — weights feel right?
-- [ ] Conversion mechanics in section 10 — anything missing?
+- [ ] Conversion mechanics in section 10 — anything missing? (D14 will add "Email to your boss" as third CTA — adjust this section after code changes)
 - [ ] Out-of-scope list in section 13 — anything you'd actually want in v1?
 - [ ] The "single most important thing" in section 15 — agreed?
+- [ ] **NEW: The Quickstart-as-InstaWorker vision in section 16 — strong enough to lead the application-facing PRD with?**
 
 Once you approve (or send back with changes), I'll:
-1. Apply any code changes the approved spec implies (e.g. archetype × dropdown copy rewrite for OQ1, "Email to boss" CTA for OQ2)
-2. Write the application-facing PRD ("Make the Learning Layer Visible")
+1. Apply the spec-approved code changes (D13 archetype × pick-specific copy rewrite, D14 "Email to your boss" CTA)
+2. Write the application-facing PRD ("Make the Learning Layer Visible"), with the Onboarding InstaWorker vision as the headline roadmap arc
 3. Tailor the resume
 4. Hand you the cover-letter teaser for the Handshake submission
