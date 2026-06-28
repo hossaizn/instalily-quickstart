@@ -1,7 +1,8 @@
 import type { QuickstartState } from './types';
 import { initialState } from './types';
 
-const KEY = 'instalily-quickstart-state-v1';
+// Bumped to v2 when state shape changed (archetype-driven flow).
+const KEY = 'instalily-quickstart-state-v2';
 
 export function loadState(): QuickstartState {
   try {

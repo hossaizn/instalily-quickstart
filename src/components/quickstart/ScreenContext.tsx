@@ -1,5 +1,12 @@
 import { motion } from 'framer-motion';
-import type { QuickstartState, CompanySize, Vertical } from '../../lib/types';
+import { FREQUENCY_OPTIONS, TEAM_SIZE_OPTIONS } from '../../lib/templates';
+import type {
+  QuickstartState,
+  CompanySize,
+  Vertical,
+  Frequency,
+  TeamSize,
+} from '../../lib/types';
 
 interface Props {
   state: QuickstartState;
@@ -49,7 +56,11 @@ export default function ScreenContext({ state, setState, next, back }: Props) {
     }));
   };
 
-  const canContinue = state.context.companySize !== '' && state.context.vertical !== '';
+  const canContinue =
+    state.context.companySize !== '' &&
+    state.context.vertical !== '' &&
+    state.context.frequency !== '' &&
+    state.context.teamSize !== '';
 
   return (
     <motion.div
@@ -62,60 +73,50 @@ export default function ScreenContext({ state, setState, next, back }: Props) {
         ← Back
       </button>
 
-      <p className="label mb-3">Step 3 of 5</p>
-      <h2 className="text-3xl md:text-4xl font-semibold leading-tight mb-4">
-        A few specifics so the spec fits your shop.
+      <p className="label mb-3">Step 3 of 4</p>
+      <h2 className="text-3xl md:text-4xl font-semibold leading-tight mb-3">
+        A few specifics so the benchmark math holds up.
       </h2>
       <p className="text-base text-ink-soft mb-10 leading-relaxed">
-        These shape the ROI estimate and the integration suggestions.
+        These shape whether your situation is structurally comparable to InstaLILY's published case study, or whether discovery would point to a different baseline.
       </p>
 
       <div className="space-y-8">
-        <div>
-          <label className="block text-sm font-medium text-ink mb-3">
-            Company size <span className="text-ink-faint">(people)</span>
-          </label>
-          <div className="flex flex-wrap gap-2">
-            {SIZES.map((s) => (
-              <button
-                key={s.value}
-                onClick={() =>
-                  setState((st) => ({ ...st, context: { ...st.context, companySize: s.value } }))
-                }
-                className={[
-                  'chip-interactive',
-                  state.context.companySize === s.value
-                    ? '!bg-ink !text-paper !ring-ink'
-                    : '',
-                ].join(' ')}
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <ChipPicker
+          label="Company size (people)"
+          options={SIZES}
+          value={state.context.companySize}
+          onPick={(v) =>
+            setState((s) => ({ ...s, context: { ...s.context, companySize: v as CompanySize } }))
+          }
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-ink mb-3">Industry vertical</label>
-          <div className="flex flex-wrap gap-2">
-            {VERTICALS.map((v) => (
-              <button
-                key={v.value}
-                onClick={() =>
-                  setState((st) => ({ ...st, context: { ...st.context, vertical: v.value } }))
-                }
-                className={[
-                  'chip-interactive',
-                  state.context.vertical === v.value
-                    ? '!bg-ink !text-paper !ring-ink'
-                    : '',
-                ].join(' ')}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <ChipPicker
+          label="Industry vertical"
+          options={VERTICALS}
+          value={state.context.vertical}
+          onPick={(v) =>
+            setState((s) => ({ ...s, context: { ...s.context, vertical: v as Vertical } }))
+          }
+        />
+
+        <ChipPicker
+          label="How often this workflow runs"
+          options={FREQUENCY_OPTIONS}
+          value={state.context.frequency}
+          onPick={(v) =>
+            setState((s) => ({ ...s, context: { ...s.context, frequency: v as Frequency } }))
+          }
+        />
+
+        <ChipPicker
+          label="People on your team doing this work"
+          options={TEAM_SIZE_OPTIONS}
+          value={state.context.teamSize}
+          onPick={(v) =>
+            setState((s) => ({ ...s, context: { ...s.context, teamSize: v as TeamSize } }))
+          }
+        />
 
         <div>
           <label className="block text-sm font-medium text-ink mb-3">
@@ -143,5 +144,34 @@ export default function ScreenContext({ state, setState, next, back }: Props) {
         <span aria-hidden>→</span>
       </button>
     </motion.div>
+  );
+}
+
+interface ChipPickerProps {
+  label: string;
+  options: { value: string; label: string }[];
+  value: string;
+  onPick: (v: string) => void;
+}
+
+function ChipPicker({ label, options, value, onPick }: ChipPickerProps) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-ink mb-3">{label}</label>
+      <div className="flex flex-wrap gap-2">
+        {options.map((opt) => (
+          <button
+            key={opt.value}
+            onClick={() => onPick(opt.value)}
+            className={[
+              'chip-interactive',
+              value === opt.value ? '!bg-ink !text-paper !ring-ink' : '',
+            ].join(' ')}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }

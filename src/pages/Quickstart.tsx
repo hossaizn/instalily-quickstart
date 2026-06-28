@@ -14,12 +14,10 @@ import { initialState } from '../lib/types';
 export default function Quickstart() {
   const [state, setState] = useState(() => loadState());
 
-  // Persist state across refresh.
   useEffect(() => {
     saveState(state);
   }, [state]);
 
-  // Scroll to top on screen change.
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [state.step]);
@@ -29,9 +27,7 @@ export default function Quickstart() {
     return v as 1 | 2 | 3 | 4 | 5;
   };
 
-  const goTo = (step: 1 | 2 | 3 | 4 | 5) =>
-    setState((s) => ({ ...s, step }));
-
+  const goTo = (step: 1 | 2 | 3 | 4 | 5) => setState((s) => ({ ...s, step }));
   const next = () => goTo(clamp(state.step + 1));
   const back = () => goTo(clamp(state.step - 1));
 
@@ -40,15 +36,22 @@ export default function Quickstart() {
     setState({ ...initialState });
   };
 
-  const spec = useMemo(() => generateSpec(state), [state]);
+  // Only generate when archetype is set (avoids throwing on step 1 before pick).
+  const spec = useMemo(
+    () => (state.archetype ? generateSpec(state) : null),
+    [state]
+  );
+
+  // Progress dots only show on the 3 user-input steps.
+  const showDots = state.step <= 3;
 
   return (
     <div className="min-h-screen bg-paper">
       <Brand showBackToHub />
 
-      {state.step < 5 && (
+      {showDots && (
         <div className="container-wide pt-6">
-          <ProgressDots current={state.step} total={5} />
+          <ProgressDots current={state.step} total={3} />
         </div>
       )}
 
@@ -64,7 +67,9 @@ export default function Quickstart() {
             <ScreenContext key="s3" state={state} setState={setState} next={next} back={back} />
           )}
           {state.step === 4 && <ScreenGenerating key="s4" next={next} />}
-          {state.step === 5 && <ScreenSpec key="s5" state={state} spec={spec} restart={restart} />}
+          {state.step === 5 && spec && (
+            <ScreenSpec key="s5" state={state} spec={spec} restart={restart} />
+          )}
         </AnimatePresence>
       </main>
     </div>

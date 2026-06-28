@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import { TEMPLATE_OPTIONS } from '../../lib/templates';
-import type { QuickstartState, TemplateKey } from '../../lib/types';
+import { ARCHETYPES } from '../../lib/templates';
+import type { QuickstartState, Archetype } from '../../lib/types';
 
 interface Props {
   state: QuickstartState;
@@ -9,11 +9,9 @@ interface Props {
 }
 
 export default function ScreenHome({ state, setState, next }: Props) {
-  const canContinue = state.role.trim().length > 1 || state.template !== null;
-
-  const pickTemplate = (key: TemplateKey) => {
-    setState((s) => ({ ...s, template: key }));
-    setTimeout(next, 150);
+  const pick = (key: Archetype) => {
+    setState((s) => ({ ...s, archetype: key }));
+    setTimeout(next, 180);
   };
 
   return (
@@ -21,64 +19,48 @@ export default function ScreenHome({ state, setState, next }: Props) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="container-prose py-12 md:py-20"
+      className="container-wide py-12 md:py-20"
     >
-      <p className="label mb-4">For frontline operators</p>
-      <h1 className="text-4xl md:text-5xl font-semibold leading-[1.1] mb-5">
-        What could an AI teammate do in your role?
-      </h1>
-      <p className="text-lg text-ink-soft leading-relaxed mb-10">
-        60 seconds. No signup. You'll get a draft InstaWorker spec built around your actual workflow — something you can show your boss.
-      </p>
-
-      <label className="block mb-2 text-sm font-medium text-ink-soft" htmlFor="role">
-        Your role
-      </label>
-      <input
-        id="role"
-        type="text"
-        autoFocus
-        value={state.role}
-        onChange={(e) => setState((s) => ({ ...s, role: e.target.value, template: null }))}
-        placeholder="e.g. Parts Manager at a distributor"
-        className="w-full px-4 py-3.5 bg-paper-card rounded-lg border border-ink/10
-                   text-ink placeholder:text-ink-faint
-                   focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent
-                   transition-shadow duration-150"
-      />
-
-      <button
-        onClick={next}
-        disabled={!canContinue}
-        className="btn-primary mt-4 w-full md:w-auto"
-      >
-        Continue
-        <span aria-hidden>→</span>
-      </button>
-
-      <div className="mt-14">
-        <p className="label mb-4">Or start from a template</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {TEMPLATE_OPTIONS.map((opt) => {
-            const active = state.template === opt.key;
-            return (
-              <button
-                key={opt.key}
-                onClick={() => pickTemplate(opt.key)}
-                className={[
-                  'card p-5 text-left transition-all duration-150',
-                  active
-                    ? 'ring-2 ring-accent shadow-md'
-                    : 'hover:ring-ink/20 hover:shadow-sm',
-                ].join(' ')}
-              >
-                <div className="font-serif text-lg font-semibold text-ink">{opt.label}</div>
-                <div className="text-sm text-ink-muted mt-1">{opt.example}</div>
-              </button>
-            );
-          })}
-        </div>
+      <div className="max-w-prose">
+        <p className="label mb-4">For frontline operators</p>
+        <h1 className="text-4xl md:text-5xl font-semibold leading-[1.05] mb-5">
+          What could an AI teammate do in your role?
+        </h1>
+        <p className="text-lg text-ink-soft leading-relaxed mb-10">
+          Sixty seconds. Four clicks. You'll get a draft InstaWorker spec built from your actual workflow — something you can show your boss.
+        </p>
       </div>
+
+      <p className="label mb-4">Pick the role closest to yours</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {ARCHETYPES.map((arch) => {
+          const active = state.archetype === arch.key;
+          return (
+            <button
+              key={arch.key}
+              onClick={() => pick(arch.key)}
+              className={[
+                'card text-left p-6 transition-all duration-150 group',
+                active
+                  ? 'ring-2 ring-accent shadow-md'
+                  : 'hover:ring-ink/20 hover:shadow-md hover:-translate-y-0.5',
+              ].join(' ')}
+            >
+              <div className="font-serif text-xl font-semibold text-ink mb-1.5">
+                {arch.cardTitle}
+              </div>
+              <div className="text-sm text-ink-soft leading-relaxed mb-3">
+                {arch.cardLine}
+              </div>
+              <div className="text-xs text-ink-muted">{arch.cardExamples}</div>
+            </button>
+          );
+        })}
+      </div>
+
+      <p className="text-xs text-ink-muted mt-8 max-w-prose leading-relaxed">
+        Your archetype picks the right set of follow-up questions. Each pathway is tailored — Parts Counter doesn't see Claims-shaped prompts.
+      </p>
     </motion.div>
   );
 }

@@ -1,179 +1,392 @@
-import type { QuickstartState, SpecOutput, TemplateKey, CompanySize } from './types';
+import type {
+  Archetype,
+  BrainModule,
+  ComparableBenchmark,
+  DiscoveryItem,
+  QuickstartState,
+  SpecOutput,
+  WorkflowStep,
+  DataState,
+  DecisionComplexity,
+  Frequency,
+  TeamSize,
+} from './types';
 
-interface TemplateBase {
+// ---------------------------------------------------------------------------
+// Archetype catalog
+// ---------------------------------------------------------------------------
+
+interface ArchetypeMeta {
+  key: Archetype;
+  cardTitle: string;
+  cardLine: string;
+  cardExamples: string;
   workerName: string;
   tagline: string;
-  defaultBrainModules: { name: string; sources: string[] }[];
-  workflowFn: (state: QuickstartState) => { title: string; detail: string }[];
-  fallbackTask: string;
-  fallbackDataSource: string;
-  fallbackOutput: string;
+  brainModules: BrainModule[];
+  taskOptions: { value: string; label: string }[];
+  outputOptions: { value: string; label: string }[];
 }
 
-const TEMPLATES: Record<TemplateKey, TemplateBase> = {
-  parts: {
+export const ARCHETYPES: ArchetypeMeta[] = [
+  {
+    key: 'parts',
+    cardTitle: 'Parts Counter Lead',
+    cardLine: 'Industrial distribution. Quotes, cross-references, customer follow-up.',
+    cardExamples: 'Distributors · Wholesalers · MRO supply',
     workerName: 'Parts InstaWorker',
     tagline: 'Quotes built, cross-references resolved, customer follow-ups sent. Overnight.',
-    defaultBrainModules: [
+    brainModules: [
       { name: 'Parts Catalog Brain', sources: ['SKU master', 'cross-reference tables', 'OEM substitutions'] },
       { name: 'Customer Pricing Brain', sources: ['contract pricing', 'tier matrices', 'volume agreements'] },
       { name: 'Inventory Position Brain', sources: ['warehouse stock', 'incoming POs', 'allocation rules'] },
     ],
-    fallbackTask: 'Building quotes from inbound part requests',
-    fallbackDataSource: 'ERP catalog + customer-specific pricing',
-    fallbackOutput: 'Quote PDF sent to customer; line items written to ERP',
-    workflowFn: (s) => [
-      {
-        title: 'Read the request',
-        detail: `Pulls the inbound request (${s.workflow.dataSource || 'email + ERP'}), extracts part numbers, customer ID, qty.`,
-      },
-      {
-        title: 'Resolve and price',
-        detail: `Cross-references SKUs, applies customer-specific pricing tiers, checks inventory position. Flags substitutions when primary is out.`,
-      },
-      {
-        title: 'Draft and route',
-        detail: `Drafts the quote in your existing system, attaches to the customer record, queues it for human approval if margin is below your threshold.`,
-      },
+    taskOptions: [
+      { value: 'quoting', label: 'Building quotes from inbound part requests' },
+      { value: 'crossref', label: 'Cross-referencing OEM substitutions when stock is short' },
+      { value: 'followup', label: 'Following up on quoted orders that never came back' },
+      { value: 'reconciling', label: 'Reconciling invoice discrepancies and credit memos' },
+      { value: 'pricing-check', label: 'Pricing checks against contract terms' },
+    ],
+    outputOptions: [
+      { value: 'quote-erp', label: 'Quote PDF emailed to customer + line items written to ERP' },
+      { value: 'sales-order', label: 'Sales order entered directly into ERP' },
+      { value: 'inventory-route', label: 'Routed to ops team for inventory check' },
+      { value: 'price-hold', label: 'Held for next customer interaction (price approved)' },
     ],
   },
-  claims: {
+  {
+    key: 'claims',
+    cardTitle: 'Claims Analyst',
+    cardLine: 'Insurance / healthcare. FNOL triage, coverage decisions, vendor routing.',
+    cardExamples: 'P&C insurance · Healthcare claims · TPAs',
     workerName: 'Claims InstaWorker',
-    tagline: 'First-pass claim review with the same logic your senior adjusters use. Audit trail attached.',
-    defaultBrainModules: [
+    tagline: 'First-pass review with the same logic your senior adjusters use. Audit trail attached.',
+    brainModules: [
       { name: 'Policy Rules Brain', sources: ['policy documents', 'coverage matrices', 'state-specific addenda'] },
       { name: 'Adjuster Heuristics Brain', sources: ['past claim decisions', 'reviewer notes', 'denial rationale library'] },
       { name: 'Vendor Network Brain', sources: ['preferred vendor list', 'historical pricing', 'capacity windows'] },
     ],
-    fallbackTask: 'Triaging inbound claims and surfacing review-ready summaries',
-    fallbackDataSource: 'claim intake form + policy database',
-    fallbackOutput: 'Claim summary + recommended action written to the adjuster\'s queue',
-    workflowFn: (s) => [
-      {
-        title: 'Parse intake',
-        detail: `Pulls structured fields from ${s.workflow.dataSource || 'the intake form, FNOL, attached documents'}, populates the claim record.`,
-      },
-      {
-        title: 'Apply policy + heuristics',
-        detail: `Runs coverage logic against the policy, applies the patterns your senior adjusters use, generates a recommended action with rationale.`,
-      },
-      {
-        title: 'Route with context',
-        detail: `${s.workflow.output || 'Pushes a triage summary to the adjuster\'s queue'} with confidence score and the specific document references the decision was based on.`,
-      },
+    taskOptions: [
+      { value: 'triage', label: 'First-pass triage of new claims (FNOL)' },
+      { value: 'coverage', label: 'Coverage interpretation against the policy' },
+      { value: 'vendor', label: 'Vendor / repair shop assignment' },
+      { value: 'docs', label: 'Documentation review for completeness' },
+      { value: 'subro', label: 'Subrogation eligibility checks' },
+    ],
+    outputOptions: [
+      { value: 'queue-summary', label: "Triage summary routed into adjuster's queue" },
+      { value: 'coverage-letter', label: 'Coverage decision into claims system + customer letter' },
+      { value: 'vendor-dispatch', label: 'Vendor dispatch + customer notification' },
+      { value: 'escalation', label: 'Escalated to senior adjuster for review' },
     ],
   },
-  service: {
+  {
+    key: 'service',
+    cardTitle: 'Service Dispatcher',
+    cardLine: 'Field service. Diagnosis, tech matching, parts staging, ETAs.',
+    cardExamples: 'HVAC · Equipment service · Facilities maintenance',
     workerName: 'Field Service InstaWorker',
     tagline: 'Dispatch decisions made before the phone rings. Parts pre-staged. Tech briefed.',
-    defaultBrainModules: [
+    brainModules: [
       { name: 'Equipment History Brain', sources: ['service tickets', 'install records', 'warranty status'] },
       { name: 'Dispatch Logic Brain', sources: ['tech skills matrix', 'route windows', 'SLA commitments'] },
       { name: 'Parts Availability Brain', sources: ['warehouse stock', 'truck stock', 'transfer windows'] },
     ],
-    fallbackTask: 'Triaging service requests and dispatching the right technician',
-    fallbackDataSource: 'customer call notes + equipment service history',
-    fallbackOutput: 'Dispatched work order with technician, ETA, and parts list',
-    workflowFn: (s) => [
-      {
-        title: 'Diagnose from context',
-        detail: `Reads ${s.workflow.dataSource || 'inbound call notes + equipment history'}, infers likely root cause from past tickets on similar units, surfaces the 2-3 most probable causes.`,
-      },
-      {
-        title: 'Match tech and parts',
-        detail: `Picks the technician whose skills, location, and route window fit best. Pre-stages parts based on the diagnosis confidence band.`,
-      },
-      {
-        title: 'Dispatch and brief',
-        detail: `${s.workflow.output || 'Writes the dispatch to your FSM'}, sends the tech a briefing with equipment history and likely causes ranked.`,
-      },
+    taskOptions: [
+      { value: 'diagnose', label: 'Diagnosing service requests from customer descriptions' },
+      { value: 'match-tech', label: 'Matching technicians to job + parts requirements' },
+      { value: 'reschedule', label: 'Rescheduling jobs when techs run over' },
+      { value: 'emergency', label: 'Triaging emergency vs. routine' },
+      { value: 'parts-stage', label: 'Managing parts pre-staging on trucks' },
+    ],
+    outputOptions: [
+      { value: 'work-order', label: 'Dispatched work order with tech + ETA + parts list' },
+      { value: 'customer-notify', label: 'Customer notification with confirmed ETA' },
+      { value: 'fsm-update', label: 'Updated route in the FSM (ServiceMax / Salesforce Service Cloud)' },
+      { value: 'manager-escalation', label: 'Escalated to service manager for judgment' },
     ],
   },
-  quote: {
+  {
+    key: 'quote',
+    cardTitle: 'Quote Builder',
+    cardLine: 'Sales engineering. Configuration, pricing, lead times, approvals.',
+    cardExamples: 'CPQ teams · Sales engineers · Estimators',
     workerName: 'Quote Builder InstaWorker',
     tagline: 'Configured, priced, and reviewed in the time it used to take to find the spec sheet.',
-    defaultBrainModules: [
+    brainModules: [
       { name: 'Product Configuration Brain', sources: ['BOMs', 'config rules', 'compatibility matrices'] },
-      { name: 'Commercial Terms Brain', sources: ['customer contract terms', 'discount approval matrix', 'historical accepted margins'] },
+      { name: 'Commercial Terms Brain', sources: ['customer contract terms', 'discount matrix', 'historical accepted margins'] },
       { name: 'Lead Time Brain', sources: ['production calendar', 'supplier lead times', 'queue position'] },
     ],
-    fallbackTask: 'Turning customer requirements into a configured, priced quote',
-    fallbackDataSource: 'sales notes + product configuration system',
-    fallbackOutput: 'Quote document ready for the AE to send',
-    workflowFn: (s) => [
-      {
-        title: 'Read the ask',
-        detail: `Extracts requirements from ${s.workflow.dataSource || 'the rep\'s notes or the customer email'}, maps them to your product taxonomy.`,
-      },
-      {
-        title: 'Configure and price',
-        detail: `Builds a valid configuration against your BOM rules, applies the customer\'s commercial terms, calculates a margin-defensible price with rationale.`,
-      },
-      {
-        title: 'Hand off for review',
-        detail: `${s.workflow.output || 'Drafts the quote document'} and flags anything that needs an AE\'s judgment (discount approvals, non-standard terms, lead-time risk).`,
-      },
+    taskOptions: [
+      { value: 'config', label: 'Translating customer requirements into a product configuration' },
+      { value: 'pricing', label: 'Pricing the configured solution' },
+      { value: 'leadtime', label: 'Checking lead times and stock availability' },
+      { value: 'document', label: 'Drafting the formal quote document' },
+      { value: 'approval', label: 'Routing for discount approval' },
+    ],
+    outputOptions: [
+      { value: 'ae-review', label: 'Quote document sent to AE for review' },
+      { value: 'cpq', label: 'Drafted directly in the CPQ system' },
+      { value: 'bom-erp', label: 'Configured BOM written to ERP' },
+      { value: 'customer-revision', label: 'Held for customer revisions' },
     ],
   },
-};
+];
 
-function detectTemplate(state: QuickstartState): TemplateKey {
-  if (state.template) return state.template;
-  const blob = `${state.role} ${state.workflow.task}`.toLowerCase();
-  if (/(claim|adjust|insurance|policy|fnol)/.test(blob)) return 'claims';
-  if (/(service|tech|dispatch|repair|field|technician)/.test(blob)) return 'service';
-  if (/(quote|proposal|configur|cpq|estimate)/.test(blob)) return 'quote';
-  return 'parts';
+export function archetypeMeta(key: Archetype): ArchetypeMeta {
+  return ARCHETYPES.find((a) => a.key === key)!;
 }
 
-function roiForSize(size: CompanySize | ''): SpecOutput['roi'] {
-  switch (size) {
-    case 'under-50':
-      return { hoursPerWeek: '6–12 hrs/week per rep', accuracyClaim: '~85% straight-through on first 30 days', rampWeeks: '2–3 weeks' };
-    case '50-200':
-      return { hoursPerWeek: '15–30 hrs/week across the team', accuracyClaim: '~90% straight-through after the first 60 days', rampWeeks: '3–4 weeks' };
-    case '200-1000':
-      return { hoursPerWeek: '40–80 hrs/week across the team', accuracyClaim: '~92% straight-through after the first 90 days', rampWeeks: '4–6 weeks' };
-    case '1000-5000':
-      return { hoursPerWeek: '120+ hrs/week across the team', accuracyClaim: '~93% straight-through, with senior-only escalation on edge cases', rampWeeks: '6–8 weeks' };
-    case 'over-5000':
-      return { hoursPerWeek: '300+ hrs/week across the team', accuracyClaim: '~94% straight-through; remaining work is consolidated for senior review', rampWeeks: '6–10 weeks per vertical' };
+// ---------------------------------------------------------------------------
+// Shared dropdown option lists
+// ---------------------------------------------------------------------------
+
+export const DATA_STATE_OPTIONS: { value: DataState; label: string }[] = [
+  { value: 'digital-in-system', label: 'Already digital, in our system of record' },
+  { value: 'digital-in-email', label: 'Digital but arriving in email or PDF attachments' },
+  { value: 'mixed-digital-phone', label: 'Mixed — digital plus phone calls or notes' },
+  { value: 'mostly-phone-paper', label: 'Mostly phone calls, paper, or in-person' },
+];
+
+export const DECISION_COMPLEXITY_OPTIONS: { value: DecisionComplexity; label: string }[] = [
+  { value: 'mostly-rule-based', label: 'Mostly rule-based (apply policy / rules / pricing)' },
+  { value: 'mostly-judgment', label: 'Mostly judgment (case-by-case, relationship-driven)' },
+  { value: 'mixed-with-override', label: 'Mixed — rules with human override on edge cases' },
+];
+
+export const FREQUENCY_OPTIONS: { value: Frequency; label: string }[] = [
+  { value: 'hundreds-daily', label: 'Hundreds daily' },
+  { value: 'tens-daily', label: 'Tens daily' },
+  { value: 'daily', label: 'A few daily' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'less-than-weekly', label: 'Less than weekly' },
+];
+
+export const TEAM_SIZE_OPTIONS: { value: TeamSize; label: string }[] = [
+  { value: 'solo', label: 'Just me' },
+  { value: 'small', label: '2 – 5 people' },
+  { value: 'mid', label: '6 – 20 people' },
+  { value: 'large', label: '20+ people' },
+];
+
+// ---------------------------------------------------------------------------
+// Workflow narrative generator (uses ALL the inputs)
+// ---------------------------------------------------------------------------
+
+function labelFor(opts: { value: string; label: string }[], value: string): string {
+  return opts.find((o) => o.value === value)?.label ?? '';
+}
+
+function dataStateNarrative(s: DataState | ''): string {
+  switch (s) {
+    case 'digital-in-system':
+      return 'pulls directly from your system of record';
+    case 'digital-in-email':
+      return 'parses inbound email and PDF attachments';
+    case 'mixed-digital-phone':
+      return 'consolidates digital records and call notes';
+    case 'mostly-phone-paper':
+      return 'works against transcribed call notes (with a recommended digitization step)';
     default:
-      return { hoursPerWeek: '~20 hrs/week per team using it', accuracyClaim: '~90% straight-through after ramp', rampWeeks: '3–5 weeks' };
+      return 'reads the inbound data';
   }
 }
 
-function deriveIntegrations(state: QuickstartState): string[] {
-  const picked = state.context.tools.filter(Boolean);
-  if (picked.length > 0) return picked;
-  return ['Your existing ERP', 'Email', 'CRM of record'];
+function decisionNarrative(d: DecisionComplexity | ''): string {
+  switch (d) {
+    case 'mostly-rule-based':
+      return 'runs the same rules a senior person on your team would, end to end';
+    case 'mostly-judgment':
+      return 'drafts a recommended action with rationale; a human reviews before acting';
+    case 'mixed-with-override':
+      return 'auto-completes the rule-based portion and surfaces the judgment cases for human review';
+    default:
+      return 'applies your decision logic';
+  }
 }
 
-export function generateSpec(state: QuickstartState): SpecOutput {
-  const key = detectTemplate(state);
-  const t = TEMPLATES[key];
+function buildWorkflowSteps(state: QuickstartState): WorkflowStep[] {
+  if (!state.archetype) return [];
+  const meta = archetypeMeta(state.archetype);
+  const taskLabel = labelFor(meta.taskOptions, state.workflow.task) || 'this workflow';
+  const outputLabel = labelFor(meta.outputOptions, state.workflow.outputDestination) || 'completed work';
+
+  return [
+    {
+      title: 'Read the request',
+      detail: `For "${taskLabel.toLowerCase()}", the InstaWorker ${dataStateNarrative(state.workflow.dataState)}, extracts the structured fields, and populates the working record.`,
+    },
+    {
+      title: 'Reason about it',
+      detail: `It ${decisionNarrative(state.workflow.decisionComplexity)}, citing the specific rules and historical patterns its decision was based on.`,
+    },
+    {
+      title: 'Hand off cleanly',
+      detail: `Output goes where you expect it: ${outputLabel.toLowerCase()}. Every action lands with an audit trail, so your team can spot-check at any point.`,
+    },
+  ];
+}
+
+// ---------------------------------------------------------------------------
+// Comparable benchmark scorer
+// SRS Distribution case study is the only publicly verifiable InstaLILY benchmark.
+// We grade the user's situation by how structurally similar it is to SRS.
+// ---------------------------------------------------------------------------
+
+const SRS_CASE = {
+  name: 'SRS Distribution',
+  sourceUrl: 'https://www.mdm.com/article/technology/ai/how-srs-distribution-and-instalily-are-rewiring-growth-with-ai/',
+  headline: 'Quote turnaround from 6 days to minutes. ~10% revenue uplift on parts business. Published with InstaLILY.',
+};
+
+function scoreSimilarityToSRS(state: QuickstartState): number {
+  let score = 0;
+  // SRS was parts distribution / quote building
+  if (state.archetype === 'parts') score += 2;
+  else if (state.archetype === 'quote') score += 1;
+  // SRS was digital in ERP
+  if (state.workflow.dataState === 'digital-in-system') score += 1;
+  else if (state.workflow.dataState === 'digital-in-email') score += 0.5;
+  // SRS was rule-based with override
+  if (state.workflow.decisionComplexity === 'mostly-rule-based') score += 1;
+  else if (state.workflow.decisionComplexity === 'mixed-with-override') score += 1;
+  // SRS was high-volume
+  if (state.context.frequency === 'hundreds-daily') score += 1;
+  else if (state.context.frequency === 'tens-daily') score += 0.5;
+  // SRS is mid-large distributor
+  if (state.context.companySize === '200-1000' || state.context.companySize === '1000-5000' || state.context.companySize === 'over-5000') score += 1;
+  // SRS is industrial distribution
+  if (state.context.vertical === 'industrial-distribution') score += 1;
+  return score;
+}
+
+function buildBenchmark(state: QuickstartState): ComparableBenchmark {
+  const score = scoreSimilarityToSRS(state);
+  const matchLevel: ComparableBenchmark['matchLevel'] = score >= 5 ? 'high' : score >= 3 ? 'partial' : 'low';
+
+  const meta = state.archetype ? archetypeMeta(state.archetype) : null;
+  const archetypeLabel = meta ? meta.cardTitle : 'your role';
+  const verticalLabel = state.context.vertical && state.context.vertical !== 'other'
+    ? state.context.vertical.replace(/-/g, ' ')
+    : '';
+
+  const reasoning = matchLevels(state, archetypeLabel, verticalLabel)[matchLevel];
+
+  const whatThisMeans = {
+    high: 'The published SRS numbers are a defensible directional benchmark for what InstaLILY could do on your workflow. Treat them as the ceiling of what to validate in discovery, not as a quote.',
+    partial: 'The SRS case study gives a directional range, but the structural differences mean your actual outcomes could land meaningfully above or below it. Discovery would identify a closer-matching deployment from InstaLILY\'s internal data.',
+    low: 'The SRS benchmark is not the right comparable for your workflow. The InstaLILY team would point to a different deployment as the relevant baseline — that data lives inside their account, not on the public site.',
+  }[matchLevel];
+
   return {
-    workerName: t.workerName,
-    tagline: t.tagline,
-    workflowSteps: t.workflowFn({
-      ...state,
-      workflow: {
-        task: state.workflow.task || t.fallbackTask,
-        dataSource: state.workflow.dataSource || t.fallbackDataSource,
-        output: state.workflow.output || t.fallbackOutput,
-      },
-    }),
-    brainModules: t.defaultBrainModules,
-    integrations: deriveIntegrations(state),
-    roi: roiForSize(state.context.companySize),
-    riskNote:
-      'Numbers above are directional, based on InstaLILY case study patterns and standard distribution-software benchmarks. Final scoping requires looking at your actual workflows, data quality, and edge-case volume.',
+    matchLevel,
+    matchScore: score,
+    reasoning,
+    citedCase: SRS_CASE,
+    whatThisMeansForYou: whatThisMeans,
   };
 }
 
-export const TEMPLATE_OPTIONS: { key: TemplateKey; label: string; example: string }[] = [
-  { key: 'parts', label: 'Parts Distribution', example: 'Counter rep, quote desk, ops manager' },
-  { key: 'claims', label: 'Claims & Adjudication', example: 'Adjuster, claims analyst, intake' },
-  { key: 'service', label: 'Field Service', example: 'Dispatcher, service manager, planner' },
-  { key: 'quote', label: 'Quote / Proposal Building', example: 'Sales engineer, AE, estimator' },
-];
+function matchLevels(
+  state: QuickstartState,
+  archetypeLabel: string,
+  verticalLabel: string
+): Record<ComparableBenchmark['matchLevel'], string> {
+  const freqLabel = labelFor(FREQUENCY_OPTIONS, state.context.frequency).toLowerCase();
+  const dataStateLabel = labelFor(DATA_STATE_OPTIONS, state.workflow.dataState).toLowerCase();
+  const decisionLabel = labelFor(DECISION_COMPLEXITY_OPTIONS, state.workflow.decisionComplexity).toLowerCase();
+
+  return {
+    high: `You picked ${archetypeLabel}${verticalLabel ? ` in ${verticalLabel}` : ''}, ${dataStateLabel}, ${decisionLabel}, ${freqLabel || 'high volume'}. This is structurally close to the published SRS Distribution case: parts distribution, digital ERP workflow, rule-based with override, high volume.`,
+    partial: `You picked ${archetypeLabel}${verticalLabel ? ` in ${verticalLabel}` : ''}, ${dataStateLabel}, ${decisionLabel}, ${freqLabel || 'modest volume'}. There is partial overlap with the SRS case study, but the differences mean the benchmark numbers transfer directionally, not literally.`,
+    low: `You picked ${archetypeLabel}${verticalLabel ? ` in ${verticalLabel}` : ''}, ${dataStateLabel}, ${decisionLabel}, ${freqLabel || 'this cadence'}. SRS was high-volume rule-based parts distribution in ERP. Your workflow has fundamentally different shape, which means the SRS benchmark would mislead more than inform.`,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Discovery questions (real metrics a PM would actually ask)
+// ---------------------------------------------------------------------------
+
+function buildDiscoveryItems(state: QuickstartState): DiscoveryItem[] {
+  const base: DiscoveryItem[] = [];
+  if (!state.archetype) return base;
+
+  // Universal questions every engagement would ask
+  base.push({
+    metric: 'Baseline cycle time per request, today (in minutes)',
+    whyItMatters: 'Without this number, no time-saved claim is defensible. It\'s the denominator for every ROI calculation.',
+  });
+
+  base.push({
+    metric: 'Current error / rework rate on this workflow',
+    whyItMatters: 'Tells us whether the bottleneck is speed or quality. Different bottleneck = different InstaWorker shape.',
+  });
+
+  base.push({
+    metric: 'Aggregate hours your team spends on this work per week',
+    whyItMatters: 'Required to translate a per-request time saving into a team-level ROI number.',
+  });
+
+  // Archetype-specific question
+  const archetypeSpecific: Record<Archetype, DiscoveryItem> = {
+    parts: {
+      metric: 'Quote-to-order conversion rate today + % of quotes you never follow up on',
+      whyItMatters: 'The biggest InstaWorker lever in parts is recovering abandoned quotes — but only if there\'s a meaningful abandonment rate to recover.',
+    },
+    claims: {
+      metric: 'Auto-adjudication rate today, and senior-adjuster escalation rate',
+      whyItMatters: 'Tells us the realistic ceiling for straight-through automation in your specific policy mix.',
+    },
+    service: {
+      metric: 'First-time-fix rate today + average reschedule rate',
+      whyItMatters: 'Service automation\'s value depends entirely on whether better diagnosis up-front reduces truck-rolls. These two metrics measure that.',
+    },
+    quote: {
+      metric: 'Quote turnaround time, and % of quotes requiring discount-approval cycles',
+      whyItMatters: 'Approval cycle drag is often the biggest win, not the spec-writing itself. Worth measuring separately.',
+    },
+  };
+
+  base.push(archetypeSpecific[state.archetype]);
+
+  // Variance question if they picked judgment-heavy
+  if (state.workflow.decisionComplexity === 'mostly-judgment') {
+    base.push({
+      metric: 'Variance: how often this workflow deviates from the common path',
+      whyItMatters: 'Judgment-heavy work has long-tail edge cases. Discovery needs to map those to decide what stays human.',
+    });
+  }
+
+  return base;
+}
+
+// ---------------------------------------------------------------------------
+// Integrations
+// ---------------------------------------------------------------------------
+
+function deriveIntegrations(state: QuickstartState): string[] {
+  if (state.context.tools.length > 0) return state.context.tools;
+  return ['Your existing ERP', 'Email', 'CRM of record'];
+}
+
+// ---------------------------------------------------------------------------
+// Main: generate spec from state
+// ---------------------------------------------------------------------------
+
+export function generateSpec(state: QuickstartState): SpecOutput {
+  if (!state.archetype) {
+    throw new Error('Spec generation requires an archetype.');
+  }
+  const meta = archetypeMeta(state.archetype);
+  return {
+    workerName: meta.workerName,
+    tagline: meta.tagline,
+    workflowSteps: buildWorkflowSteps(state),
+    brainModules: meta.brainModules,
+    integrations: deriveIntegrations(state),
+    benchmark: buildBenchmark(state),
+    discoveryItems: buildDiscoveryItems(state),
+  };
+}

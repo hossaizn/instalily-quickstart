@@ -1,20 +1,24 @@
-export type TemplateKey = 'parts' | 'claims' | 'service' | 'quote';
+export type Archetype = 'parts' | 'claims' | 'service' | 'quote';
 
-export interface QuickstartState {
-  step: 1 | 2 | 3 | 4 | 5;
-  role: string;
-  template: TemplateKey | null;
-  workflow: {
-    task: string;
-    dataSource: string;
-    output: string;
-  };
-  context: {
-    companySize: CompanySize | '';
-    vertical: Vertical | '';
-    tools: string[];
-  };
-}
+export type DataState =
+  | 'digital-in-system'
+  | 'digital-in-email'
+  | 'mixed-digital-phone'
+  | 'mostly-phone-paper';
+
+export type DecisionComplexity =
+  | 'mostly-rule-based'
+  | 'mostly-judgment'
+  | 'mixed-with-override';
+
+export type Frequency =
+  | 'hundreds-daily'
+  | 'tens-daily'
+  | 'daily'
+  | 'weekly'
+  | 'less-than-weekly';
+
+export type TeamSize = 'solo' | 'small' | 'mid' | 'large';
 
 export type CompanySize =
   | 'under-50'
@@ -30,24 +34,64 @@ export type Vertical =
   | 'automotive'
   | 'other';
 
+export interface QuickstartState {
+  step: 1 | 2 | 3 | 4 | 5;
+  archetype: Archetype | null;
+  workflow: {
+    task: string;
+    dataState: DataState | '';
+    decisionComplexity: DecisionComplexity | '';
+    outputDestination: string;
+  };
+  context: {
+    companySize: CompanySize | '';
+    vertical: Vertical | '';
+    tools: string[];
+    frequency: Frequency | '';
+    teamSize: TeamSize | '';
+  };
+}
+
+export interface WorkflowStep {
+  title: string;
+  detail: string;
+}
+
+export interface BrainModule {
+  name: string;
+  sources: string[];
+}
+
+export interface ComparableBenchmark {
+  matchLevel: 'high' | 'partial' | 'low';
+  matchScore: number;
+  reasoning: string;
+  citedCase: {
+    name: string;
+    sourceUrl: string;
+    headline: string;
+  };
+  whatThisMeansForYou: string;
+}
+
+export interface DiscoveryItem {
+  metric: string;
+  whyItMatters: string;
+}
+
 export interface SpecOutput {
   workerName: string;
   tagline: string;
-  workflowSteps: { title: string; detail: string }[];
-  brainModules: { name: string; sources: string[] }[];
+  workflowSteps: WorkflowStep[];
+  brainModules: BrainModule[];
   integrations: string[];
-  roi: {
-    hoursPerWeek: string;
-    accuracyClaim: string;
-    rampWeeks: string;
-  };
-  riskNote: string;
+  benchmark: ComparableBenchmark;
+  discoveryItems: DiscoveryItem[];
 }
 
 export const initialState: QuickstartState = {
   step: 1,
-  role: '',
-  template: null,
-  workflow: { task: '', dataSource: '', output: '' },
-  context: { companySize: '', vertical: '', tools: [] },
+  archetype: null,
+  workflow: { task: '', dataState: '', decisionComplexity: '', outputDestination: '' },
+  context: { companySize: '', vertical: '', tools: [], frequency: '', teamSize: '' },
 };
