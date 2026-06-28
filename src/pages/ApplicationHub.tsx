@@ -104,10 +104,10 @@ export default function ApplicationHub() {
         <div className="container-prose py-16 md:py-20">
           <p className="label mb-4">The PRD</p>
           <h2 className="text-3xl md:text-4xl font-semibold mb-5 leading-tight">
-            Make the Learning Layer Visible
+            A Self-Serve Top-of-Funnel Proposal
           </h2>
           <p className="text-lg text-ink leading-relaxed mb-8 font-serif">
-            One-page PRD covering the problem, scope, success metrics, 30/60/90 roadmap, and the risk I can't disprove from the outside.
+            The full proposal: opportunity framing, the anticipated objection with my defense, success metrics, scope and roadmap, and the open questions I'd want to discuss in a first round.
           </p>
           <a
             href="https://github.com/hossaizn/instalily-quickstart/blob/main/docs/application-prd.md"
