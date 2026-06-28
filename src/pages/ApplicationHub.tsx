@@ -139,7 +139,7 @@ export default function ApplicationHub() {
               Built both end-to-end as the sole engineer. Designed the brands too (including a hand-drawn mascot for Loredrop).
             </p>
             <p>
-              Beyond the shipping work: I think imaginatively, and I read people well. The first muscle comes from years of building from scratch across many contexts (five technical co-ops, three operations roles, two iOS apps solo). The second comes from leading 20+ colleges through regional conferences and serving as Speaker of Student Senate, where every conversation surfaced needs that differed from what people articulated. In a role designing AI teammates for real humans, that combination is the work.
+              I came to Cincinnati from Dhaka in 2021 without a script. Every room I walked into after that demanded inventing my own approach and reading people I had no shared context with. That's how imagination and people-fluency became the muscles I default to. Both matter most in a role where the product is built to serve real humans.
             </p>
           </div>
 
