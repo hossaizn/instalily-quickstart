@@ -141,7 +141,7 @@ export default function ApplicationHub() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <a href="./resume.html" target="_blank" rel="noopener noreferrer" className="btn-secondary">Resume</a>
+            <a href={`${import.meta.env.BASE_URL}resume.html`} target="_blank" rel="noopener noreferrer" className="btn-secondary">Resume</a>
             <a href="https://www.linkedin.com/in/zulqarnayan-hossain/" target="_blank" rel="noopener noreferrer" className="btn-secondary">LinkedIn</a>
             <a href="https://github.com/hossaizn" target="_blank" rel="noopener noreferrer" className="btn-secondary">GitHub</a>
             <a href="https://cal.com/hossainzulqarnayan/15min" target="_blank" rel="noopener noreferrer" className="btn-primary">Book 15 min</a>
