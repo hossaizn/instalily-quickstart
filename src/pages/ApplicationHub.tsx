@@ -29,7 +29,7 @@ export default function ApplicationHub() {
           I built the missing top-of-funnel for InstaLILY in a weekend.
         </h1>
         <p className="text-xl text-ink-soft leading-relaxed font-serif italic">
-          A self-serve InstaWorker Quickstart that turns "Book a Demo" into a path that captures the 95% of visitors who aren't ready to talk to sales yet.
+          A self-serve InstaWorker Quickstart that turns "Book a Demo" into a path that captures the ~97% of visitors who aren't ready to talk to sales yet.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
           <Link to="/quickstart" className="btn-primary !py-4 text-base">
@@ -58,10 +58,10 @@ export default function ApplicationHub() {
 
           <div className="space-y-6 text-lg text-ink-soft leading-relaxed">
             <p>
-              For the visitor who's already decided, that works. For the 95% who are in research mode — the parts manager Googling "AI for distribution," the claims VP comparing vendors — there's no path. They bounce.
+              For the visitor who's already decided, that works. For the ~97% who are in research mode (the parts manager Googling "AI for distribution," the claims VP comparing vendors), there's no path. They bounce.
             </p>
             <p>
-              The Quickstart is the parallel path. <span className="text-ink font-medium">Not a replacement for the demo button — an alternative for the visitor that button doesn't serve.</span> Sixty seconds of self-serve, and they leave with a draft InstaWorker spec they can show their boss.
+              The Quickstart is the parallel path. <span className="text-ink font-medium">Not a replacement for the demo button, but an alternative for the visitor that button doesn't serve.</span> Sixty seconds of self-serve, and they leave with a draft InstaWorker spec they can show their boss.
             </p>
           </div>
 
@@ -76,11 +76,11 @@ export default function ApplicationHub() {
             <ol className="space-y-4 text-base text-ink-soft leading-relaxed">
               <li>
                 <span className="text-ink font-semibold">1. Different visitor intent → different paths.</span>{' '}
-                The Book a Demo button captures the ~5% who are ready for sales. The other 95% bounce. The Quickstart captures them with a useful artifact, not a sales call. Total qualified lead volume goes up.
+                The Book a Demo button captures the 2-3% who are ready for sales (industry benchmark for enterprise B2B SaaS). The other ~97% bounce. The Quickstart captures them with a useful artifact, not a sales call. Total qualified lead volume goes up.
               </li>
               <li>
                 <span className="text-ink font-semibold">2. Self-qualification is a feature.</span>{' '}
-                Some visitors shouldn't book — wrong vertical, too small, wrong use case. The tool surfaces that without burning a sales hour. The demos that do book are pre-qualified with context.
+                Some visitors shouldn't book: wrong vertical, too small, wrong use case. The tool surfaces that without burning a sales hour. The demos that do book are pre-qualified with context.
               </li>
               <li>
                 <span className="text-ink font-semibold">3. Specs are shareable; demos are not.</span>{' '}
@@ -88,12 +88,12 @@ export default function ApplicationHub() {
               </li>
               <li>
                 <span className="text-ink font-semibold">4. Sales velocity goes up.</span>{' '}
-                A demo booked via Quickstart opens with: "I see you're a parts manager at 200-person NetSuite shop, quote generation is your pain — let me show you Sarah at SRS solving exactly that." Not 15 minutes of discovery.
+                A demo booked via Quickstart opens with: "I see you're a parts manager at 200-person NetSuite shop, quote generation is your pain. Let me show you Sarah at SRS solving exactly that." Not 15 minutes of discovery.
               </li>
             </ol>
 
             <p className="text-sm text-ink-muted mt-6 italic leading-relaxed">
-              Honest caveat: I don't have your internal close-rate or sales-cycle data. You may have already considered this and decided against it. If so, I'd want to know why — that's the right second-round conversation.
+              Honest caveat: I don't have your internal close-rate or sales-cycle data. You may have already considered this and decided against it. If so, I'd want to know why. That's the right second-round conversation.
             </p>
           </div>
         </div>
@@ -130,13 +130,13 @@ export default function ApplicationHub() {
           </h2>
           <div className="space-y-4 text-lg text-ink-soft leading-relaxed mb-8">
             <p>
-              <a href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618" target="_blank" rel="noopener noreferrer" className="text-ink underline decoration-ink/30 hover:decoration-ink">Primrose &amp; Eve</a>{' '}— live on the App Store. Doctor-visit advocacy app. On-device statistical Pattern Engine, AI report generation, StoreKit 2, Cloudflare Workers. No central database of user data exists, by architecture.
+              <a href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618" target="_blank" rel="noopener noreferrer" className="text-ink underline decoration-ink/30 hover:decoration-ink">Primrose &amp; Eve</a>, live on the App Store. A privacy-first doctor-visit advocacy app for perimenopause where user data never leaves the phone. On-device statistical Pattern Engine, AI-generated Smart Report layer, StoreKit 2, Cloudflare Workers, DeviceCheck.
             </p>
             <p>
-              <a href="https://testflight.apple.com/join/uCazTMt2" target="_blank" rel="noopener noreferrer" className="text-ink underline decoration-ink/30 hover:decoration-ink">Loredrop</a>{' '}— in TestFlight. Daily social ritual app, built around a habit-forming engagement loop. Custom FFmpeg audio stitching pipeline, server-driven daily loop, realtime crew-state sync.
+              <a href="https://testflight.apple.com/join/uCazTMt2" target="_blank" rel="noopener noreferrer" className="text-ink underline decoration-ink/30 hover:decoration-ink">Loredrop</a>, in TestFlight. A daily social ritual app built around a habit-forming engagement loop. Small crews take turns recording one voice at a time over a day; the full story unlocks together at a shared daily reveal. Custom FFmpeg audio stitching pipeline keeps every crew member in realtime sync.
             </p>
             <p>
-              Built both end-to-end as the sole engineer. Designed, shipped, and maintained the App Review process for both. Designed the brands (including a hand-drawn mascot for Loredrop).
+              Built both end-to-end as the sole engineer. Designed the brands too (including a hand-drawn mascot for Loredrop).
             </p>
           </div>
 
