@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--
+  HOW TO USE:
+  1. Open this file in Chrome.
+  2. Cmd+P → Destination: Save as PDF → Margins: Default → Background graphics: ON → Save as zulqarnayan-hossain-resume.pdf.
+  3. Upload the PDF to Handshake's resume field.
+  4. The live URL (https://hossaizn.github.io/instalily-quickstart/resume.html) is shareable too if anyone asks.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zulqarnayan Hossain — Resume</title>
+<meta name="description" content="Solo founder + iOS / web product engineer. Tailored for the InstaLILY Product Associate role." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  @page {
+    size: letter;
+    margin: 0.45in;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.42;
+    color: #0a0a0a;
+    background: #fafaf7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    max-width: 7.5in;
+    margin: 0 auto;
+    padding: 0.45in 0.3in;
+  }
+
+  @media print {
+    html, body { background: white; padding: 0; max-width: none; }
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* Header */
+  .header {
+    margin-bottom: 16pt;
+    padding-bottom: 12pt;
+    border-bottom: 1pt solid #0a0a0a;
+  }
+  .name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 26pt;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+  .role {
+    font-size: 10.5pt;
+    color: #3f3f46;
+    margin-top: 4pt;
+    font-weight: 500;
+  }
+  .contact {
+    margin-top: 9pt;
+    font-size: 8.5pt;
+    color: #3f3f46;
+    display: flex;
+    gap: 14pt;
+    flex-wrap: wrap;
+  }
+  .contact a { border-bottom: 0.5pt solid #999; }
+
+  /* Positioning */
+  .positioning {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 12pt;
+    line-height: 1.4;
+    margin-bottom: 14pt;
+    color: #0a0a0a;
+    font-weight: 500;
+  }
+  .positioning em { font-style: italic; color: #a06400; }
+
+  /* Section label */
+  .section-label {
+    font-size: 7.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #71717a;
+    margin-bottom: 6pt;
+    font-weight: 600;
+  }
+
+  /* Section spacing */
+  .section { margin-bottom: 13pt; page-break-inside: avoid; }
+
+  /* Ship blocks */
+  .ship { margin-bottom: 9pt; }
+  .ship:last-child { margin-bottom: 0; }
+  .ship-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8pt;
+    flex-wrap: wrap;
+    margin-bottom: 2pt;
+  }
+  .ship-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 12pt;
+    font-weight: 600;
+    color: #0a0a0a;
+    letter-spacing: -0.01em;
+  }
+  .ship-status {
+    font-size: 8pt;
+    color: #71717a;
+    font-style: italic;
+  }
+  .ship-link {
+    font-size: 8pt;
+    color: #a06400;
+    margin-left: auto;
+    border-bottom: 0.5pt solid #a06400;
+  }
+  .ship-tagline {
+    font-style: italic;
+    color: #3f3f46;
+    margin-bottom: 3pt;
+  }
+  .ship-desc {
+    color: #0a0a0a;
+    margin-bottom: 4pt;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3.5pt;
+  }
+  .chip {
+    font-size: 7.5pt;
+    padding: 1.5pt 6pt;
+    background: #f4f1ea;
+    color: #0a0a0a;
+    border-radius: 99pt;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  /* Two-column row for founder + edu */
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14pt;
+    margin-bottom: 13pt;
+  }
+
+  .founder-name, .edu-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 11pt;
+    font-weight: 600;
+    margin-bottom: 1pt;
+  }
+  .founder-meta, .edu-meta {
+    font-size: 8.5pt;
+    color: #71717a;
+    margin-bottom: 4pt;
+  }
+  .founder-desc, .edu-desc { color: #0a0a0a; }
+
+  /* Stack */
+  .stack-row {
+    display: flex;
+    gap: 10pt;
+    align-items: baseline;
+    margin-bottom: 3pt;
+  }
+  .stack-cat {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #71717a;
+    flex: 0 0 56pt;
+    font-weight: 600;
+    padding-top: 1pt;
+  }
+  .stack-items { font-size: 9pt; color: #0a0a0a; flex: 1; }
+
+  /* Footer */
+  .footer {
+    margin-top: 13pt;
+    padding-top: 9pt;
+    border-top: 1pt solid #0a0a0a;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14pt;
+    flex-wrap: wrap;
+  }
+  .footer-text {
+    font-size: 8pt;
+    color: #3f3f46;
+    line-height: 1.45;
+    flex: 1;
+  }
+  .footer-meta {
+    font-size: 7.5pt;
+    color: #71717a;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="name">Zulqarnayan Hossain</div>
+    <div class="role">Solo founder &middot; iOS &amp; web product engineer</div>
+    <div class="contact">
+      <a href="mailto:hossainzulqarnayan@gmail.com">hossainzulqarnayan@gmail.com</a>
+      <a href="https://www.linkedin.com/in/zulqarnayan-hossain/">LinkedIn</a>
+      <a href="https://github.com/hossaizn">GitHub</a>
+      <a href="https://cal.com/hossainzulqarnayan/15min">cal.com/hossainzulqarnayan/15min</a>
+    </div>
+  </div>
+
+  <div class="positioning">
+    Two iOS apps shipped end-to-end in six months. Solo developer through every layer, Swift to App Review to backend. <em>Built a self-serve InstaWorker Quickstart concept for InstaLILY this weekend as the artifact for this application.</em>
+  </div>
+
+  <div class="section">
+    <p class="section-label">Recent ships</p>
+
+    <div class="ship">
+      <div class="ship-head">
+        <span class="ship-name">InstaLILY Quickstart</span>
+        <span class="ship-status">built for this application</span>
+        <a class="ship-link" href="https://hossaizn.github.io/instalily-quickstart">live demo &rarr;</a>
+      </div>
+      <p class="ship-tagline">Self-serve InstaWorker spec generator. A Product Associate audition.</p>
+      <p class="ship-desc">Five-screen flow that turns a frontline operator workflow description into a draft InstaWorker spec, scored honestly against the only public InstaLILY case study. Includes a 17-section product spec, a strategic PRD, and an adversarial-critique pass on my own work. <a href="https://github.com/hossaizn/instalily-quickstart" style="color:#a06400;border-bottom:0.5pt solid #a06400;">Source code public.</a></p>
+      <div class="chips">
+        <span class="chip">React 19 &middot; TypeScript</span>
+        <span class="chip">Tailwind &middot; Framer Motion</span>
+        <span class="chip">Smart templating</span>
+        <span class="chip">GitHub Pages</span>
+      </div>
+    </div>
+
+    <div class="ship">
+      <div class="ship-head">
+        <span class="ship-name">Primrose &amp; Eve</span>
+        <span class="ship-status">live on App Store</span>
+        <a class="ship-link" href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618">App Store &rarr;</a>
+      </div>
+      <p class="ship-tagline">Doctor-visit advocacy tool for perimenopause.</p>
+      <p class="ship-desc">Symptoms tracked entirely on-device. Statistical Pattern Engine runs locally to surface correlations. On-demand Smart Report compresses 90 days of data into three clear asks for the doctor. <strong>No central database of user data exists, by architecture.</strong> Built solo end-to-end including App Review process.</p>
+      <div class="chips">
+        <span class="chip">On-device Pattern Engine</span>
+        <span class="chip">Privacy-first architecture</span>
+        <span class="chip">Smart Report (on-demand)</span>
+        <span class="chip">StoreKit 2</span>
+        <span class="chip">Cloudflare Workers</span>
+        <span class="chip">DeviceCheck</span>
+      </div>
+    </div>
+
+    <div class="ship">
+      <div class="ship-head">
+        <span class="ship-name">Loredrop</span>
+        <span class="ship-status">in TestFlight</span>
+        <a class="ship-link" href="https://testflight.apple.com/join/uCazTMt2">Try on TestFlight &rarr;</a>
+      </div>
+      <p class="ship-tagline">Daily voice-ritual app where small crews build a chain story together, one voice at a time.</p>
+      <p class="ship-desc">Custom multi-source audio stitching pipeline (FFmpeg) on the backend. Server-driven daily loop orchestrates per-crew turn order and synchronized reveal windows. Realtime crew-state sync, APNs-driven engagement. Designed brand identity from scratch including a hand-drawn mascot.</p>
+      <div class="chips">
+        <span class="chip">Audio stitching (FFmpeg)</span>
+        <span class="chip">Server-driven daily loop</span>
+        <span class="chip">Realtime crew-state sync</span>
+        <span class="chip">APNs orchestration</span>
+        <span class="chip">Swift 6 &middot; SwiftUI</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-2">
+    <div>
+      <p class="section-label">Founder</p>
+      <p class="founder-name">Quarter AI Solutions</p>
+      <p class="founder-meta">Founder &middot; 2026 &ndash; present</p>
+      <p class="founder-desc">Personal-lab studio shipping consumer iOS apps and a parallel SMB AI-consultancy track. Two apps in production, more in active build. Solo on product, design, engineering, brand, App Review. Operating thesis: AI serving people, not replacing them.</p>
+    </div>
+    <div>
+      <p class="section-label">Education</p>
+      <p class="edu-name">Bachelor of Business Administration</p>
+      <p class="edu-meta">December 2025 graduate &middot; Cum Laude &middot; Senior 100 leadership</p>
+      <p class="edu-desc">5 co-ops + 3 campus jobs across degree. Cross-functional consulting projects, undergraduate leadership conference, founders' fellowship.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-label">Stack</p>
+    <div class="stack-row">
+      <span class="stack-cat">Mobile</span>
+      <span class="stack-items">Swift 6 &middot; SwiftUI &middot; UIKit &middot; async/await &middot; StoreKit 2 &middot; APNs &middot; DeviceCheck &middot; App Review</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-cat">Web</span>
+      <span class="stack-items">TypeScript &middot; React 19 &middot; Tailwind &middot; Vite &middot; Next.js &middot; Framer Motion</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-cat">Backend</span>
+      <span class="stack-items">Cloudflare Workers &middot; Supabase &middot; Postgres &middot; Edge Functions &middot; FFmpeg pipelines &middot; pg_net &middot; GitHub Actions</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-cat">Product</span>
+      <span class="stack-items">Product specs &middot; PRDs &middot; roadmapping &middot; adversarial critique on own work &middot; API + integration design</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">
+      <strong>Work authorization:</strong> F-1 OPT through Q1 2027. InstaLILY's posting explicitly indicates support for OPT/CPT candidates and visa sponsorship, which is part of why this role is at the top of my list.
+    </div>
+    <div class="footer-meta">Last updated 2026-06-28</div>
+  </div>
+
+</body>
+</html>
