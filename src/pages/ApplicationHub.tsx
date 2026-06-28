@@ -133,7 +133,7 @@ export default function ApplicationHub() {
               <a href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618" target="_blank" rel="noopener noreferrer" className="underline decoration-ink/30 hover:decoration-ink">Primrose &amp; Eve</a>, live on the App Store. A privacy-first doctor-visit advocacy app for perimenopause where user data never leaves the phone. On-device statistical Pattern Engine, AI-generated Smart Report layer, StoreKit 2, Cloudflare Workers, DeviceCheck.
             </p>
             <p>
-              <a href="https://testflight.apple.com/join/uCazTMt2" target="_blank" rel="noopener noreferrer" className="underline decoration-ink/30 hover:decoration-ink">Loredrop</a>, in TestFlight. A daily social ritual app built around a habit-forming engagement loop. Small crews take turns recording one voice at a time over a day; the full story unlocks together at a shared daily reveal. Custom FFmpeg audio stitching pipeline keeps every crew member in realtime sync.
+              <a href="https://testflight.apple.com/join/uCazTMt2" target="_blank" rel="noopener noreferrer" className="underline decoration-ink/30 hover:decoration-ink">Loredrop</a>, in TestFlight. A daily social ritual app built around a habit-forming engagement loop. Small crews take turns recording one voice at a time over a day; the full story unlocks together at a shared daily reveal. Custom FFmpeg audio stitching pipeline keeps every crew member in realtime sync. <em className="italic">Testing note: please use email signup; Apple Sign In isn't yet wired up in this TestFlight build.</em>
             </p>
             <p>
               Built both end-to-end as the sole engineer. Designed the brands too (including a hand-drawn mascot for Loredrop).
