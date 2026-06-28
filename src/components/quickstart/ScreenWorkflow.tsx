@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import {
   archetypeMeta,
   DATA_STATE_OPTIONS,
@@ -119,6 +120,29 @@ interface PickerProps {
 }
 
 function DropdownPicker({ number, label, hint, options, value, onChange }: PickerProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [open]);
+
+  const selectedLabel = options.find((o) => o.value === value)?.label;
+
   return (
     <div>
       <label className="block text-sm font-medium text-ink mb-1">
@@ -126,23 +150,60 @@ function DropdownPicker({ number, label, hint, options, value, onChange }: Picke
         {label}
       </label>
       <p className="text-xs text-ink-muted mb-2 ml-5">{hint}</p>
-      <div className="relative">
-        <select
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full appearance-none px-4 py-3 pr-10 bg-paper-card rounded-lg border border-ink/10
-                     text-ink text-base
-                     focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent
-                     transition-shadow duration-150 cursor-pointer"
+      <div className="relative" ref={ref}>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          className={[
+            'w-full text-left px-4 py-3 pr-10 bg-paper-card rounded-lg border border-ink/10',
+            'text-base font-sans',
+            'focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent',
+            'transition-shadow duration-150 cursor-pointer',
+            selectedLabel ? 'text-ink' : 'text-ink-faint',
+          ].join(' ')}
         >
-          <option value="">Choose one…</option>
-          {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none">▾</span>
+          {selectedLabel || 'Choose one…'}
+          <span
+            className={[
+              'absolute right-4 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none transition-transform duration-150',
+              open ? 'rotate-180' : '',
+            ].join(' ')}
+          >
+            ▾
+          </span>
+        </button>
+        {open && (
+          <div
+            role="listbox"
+            className="absolute z-20 mt-1.5 w-full bg-paper-card rounded-lg ring-1 ring-ink/10 shadow-lg overflow-hidden font-sans"
+          >
+            {options.map((opt) => {
+              const isSelected = value === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => {
+                    onChange(opt.value);
+                    setOpen(false);
+                  }}
+                  className={[
+                    'w-full text-left px-4 py-3 text-base text-ink',
+                    'hover:bg-paper-warm transition-colors duration-100',
+                    'focus:outline-none focus:bg-paper-warm',
+                    isSelected ? 'bg-accent-soft font-medium' : '',
+                  ].join(' ')}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

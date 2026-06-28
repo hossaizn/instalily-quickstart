@@ -27,7 +27,7 @@ export default function ScreenHome({ state, setState, next }: Props) {
           What could an AI teammate do in your role?
         </h1>
         <p className="text-lg text-ink-soft leading-relaxed mb-10">
-          Sixty seconds. Four clicks. You'll get a draft InstaWorker spec built from your actual workflow — something you can show your boss.
+          Sixty seconds. Four clicks. You'll get a draft InstaWorker spec built from your actual workflow, something you can show your boss.
         </p>
       </div>
 
@@ -59,7 +59,7 @@ export default function ScreenHome({ state, setState, next }: Props) {
       </div>
 
       <p className="text-xs text-ink-muted mt-8 max-w-prose leading-relaxed">
-        Your archetype picks the right set of follow-up questions. Each pathway is tailored — Parts Counter doesn't see Claims-shaped prompts.
+        Your archetype picks the right set of follow-up questions. Each pathway is tailored: Parts Counter doesn't see Claims-shaped prompts.
       </p>
     </motion.div>
   );

@@ -99,7 +99,7 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
         >
           <h2 className="text-lg font-semibold mb-1">InstaBrain modules to stand up</h2>
           <p className="text-sm text-ink-muted mb-6">
-            Specialized small-model layers — one per knowledge domain.
+            Specialized small-model layers, one per knowledge domain.
           </p>
           <ul className="space-y-4">
             {spec.brainModules.map((mod, i) => (
@@ -205,7 +205,7 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
       >
         <p className="label !text-paper/60 mb-2">A note on the math</p>
         <p className="text-base leading-relaxed">
-          This Quickstart grades you against the <em className="italic">one</em> InstaLILY case study published publicly. Inside the company, the InstaLILY team has data from every live deployment — SRS plus everyone else. The same tool, running with internal access, would match your situation against the closest <em className="italic">actual</em> customer and surface their measured outcomes. That's the production version of this product.
+          This Quickstart grades you against the <em className="italic">one</em> InstaLILY case study published publicly. Inside the company, the InstaLILY team has data from every live deployment (SRS plus every other customer). The same tool, running with internal access, would match your situation against the closest <em className="italic">actual</em> customer and surface their measured outcomes. That's the production version of this product.
         </p>
       </motion.section>
 
@@ -257,7 +257,7 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
 
 function buildMailtoLink(state: QuickstartState, spec: SpecOutput): string {
   const archetypeName = state.archetype ? archetypeMeta(state.archetype).cardTitle : 'our team';
-  const subject = `Worth a look — InstaWorker spec for ${archetypeName}`;
+  const subject = `Worth a look: InstaWorker spec for ${archetypeName}`;
   const url =
     typeof window !== 'undefined'
       ? `${window.location.origin}${window.location.pathname.replace(/\/quickstart\/?$/, '')}/quickstart`
@@ -270,7 +270,7 @@ function buildMailtoLink(state: QuickstartState, spec: SpecOutput): string {
     `It came back with a "${spec.workerName}" spec:`,
     `${spec.tagline}`,
     '',
-    'Worth a look — takes 60 seconds:',
+    'Worth a look, takes 60 seconds:',
     url,
     '',
     "Want to see if their team would walk us through what something like this would look like for our setup.",
@@ -321,7 +321,7 @@ function renderSpecAsMarkdown(state: QuickstartState, spec: SpecOutput): string 
     '',
     '## How it would run',
     '',
-    ...spec.workflowSteps.map((s, i) => `${i + 1}. **${s.title}** — ${s.detail}`),
+    ...spec.workflowSteps.map((s, i) => `${i + 1}. **${s.title}**. ${s.detail}`),
     '',
     '## InstaBrain modules',
     '',
@@ -337,14 +337,14 @@ function renderSpecAsMarkdown(state: QuickstartState, spec: SpecOutput): string 
     '',
     `**Reasoning:** ${spec.benchmark.reasoning}`,
     '',
-    `**Cited case:** ${spec.benchmark.citedCase.name} — ${spec.benchmark.citedCase.headline}`,
+    `**Cited case:** ${spec.benchmark.citedCase.name}. ${spec.benchmark.citedCase.headline}`,
     `**Source:** ${spec.benchmark.citedCase.sourceUrl}`,
     '',
     `**What this means:** ${spec.benchmark.whatThisMeansForYou}`,
     '',
     '## What discovery would establish',
     '',
-    ...spec.discoveryItems.map((d) => `- **${d.metric}** — ${d.whyItMatters}`),
+    ...spec.discoveryItems.map((d) => `- **${d.metric}**. ${d.whyItMatters}`),
     '',
     '---',
     '',
