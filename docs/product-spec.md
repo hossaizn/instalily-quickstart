@@ -1,9 +1,11 @@
 # InstaWorker Quickstart — Internal Product Spec
 
-**Status:** Draft v0.1 (pending review)
+**Status:** v0.3 (post-critique revision)
 **Date:** 2026-06-27
-**Author:** Zulqarnayan Hossain (with Claude as PM partner)
-**Audience:** Us, for building. Not for InstaLILY submission.
+**Author:** Zulqarnayan Hossain
+**Audience:** Internal, for building. Not for InstaLILY submission.
+
+> Disclosure: This spec was drafted in collaboration with an AI pair (Claude). Strategic calls are the author's; the AI surfaced options and ran an adversarial critique pass against v0.2. Every decision below has been ratified by the author.
 
 ---
 
@@ -52,33 +54,37 @@ What the Quickstart is **not** trying to do:
 - Evidence of taste (does it look like something they'd ship?)
 - Evidence of distribution thinking (would this actually drive results, or is it a portfolio piece?)
 
-**The interesting tension:** what makes the product convert the frontline operator is also what makes it impressive to the hiring committee. We design for the primary user; the secondary user judges by how well we designed for the primary.
+**The single rule that resolves the audience tension:** **we optimize for the frontline operator. The committee judges us by how well we did that.** Anywhere the two audiences want different things (e.g., the committee wants visible algorithm rigor; the operator wants invisible competence) the operator wins. The committee can read the spec doc for the reasoning; the product itself stays operator-first.
 
 ---
 
-## 4. Ratified decisions
+## 4. Ratified strategic decisions
 
-These are settled. Do not reopen unless a downstream issue forces it.
+These shape the product. Only strategic calls live here; tactical execution choices are in §4b. Do not reopen unless a downstream issue forces it.
 
-| # | Decision | Rationale | Date |
-|---|---|---|---|
-| D1 | Webapp, not iOS | InstaLILY's frontline users live in desktop ERP/CRM, not iOS. Sharing friction is lower. | 2026-06-27 |
-| D2 | Next.js / React (Vite) + Tailwind + Framer Motion | Standard stack, fastest path to polish, no server needed. | 2026-06-27 |
-| D3 | Deploy to GitHub Pages (public repo) | Free, no extra account, public source signals clean engineering. | 2026-06-27 |
-| D4 | One URL, two routes: `/` = application hub, `/quickstart` = the demo | Hiring manager submits one URL; both audiences served. | 2026-06-27 |
-| D5 | 4 archetypes: Parts Counter, Claims Analyst, Service Dispatcher, Quote Builder | Matches InstaLILY's actual vertical focus. 4 is enough breadth without dilution. | 2026-06-27 |
-| D6 | Step 1 = archetype card pick only (no free text) | Free text in step 1 prevents tailored downstream questions. | 2026-06-27 |
-| D7 | Step 2 = dropdowns, not free text | Free text is friction-death for frontline operators. | 2026-06-27 |
-| D8 | **Zero fabricated numbers anywhere in the output.** Every claim traces to user input or the cited SRS case study. | Real PMs don't fabricate. The whole artifact's credibility depends on this. | 2026-06-27 |
-| D9 | Cite only the SRS Distribution case (the only public InstaLILY case study) | Anything else is speculation. Honesty signal. | 2026-06-27 |
-| D10 | The Quickstart explicitly tells users "the production version, with internal access to actual customer data, would do this better" | Reframes the public-data limitation as a product-thinking-out-loud signal. | 2026-06-27 |
-| D11 | Section title: "What the public case study tells us" (not "How comparable is your situation?") | We judge the benchmark's applicability, not the user. | 2026-06-27 |
-| D12 | Application hub leads with anticipated objection + defense (parallel path, not replacement) | The strongest single signal that Zul thinks like a PM. | 2026-06-27 |
-| D13 | **Step 2 dropdowns: shared labels, archetype × pick-specific output copy.** Parts + digital-in-system + rule-based produces different output narrative than Claims + digital-in-system + rule-based, and dramatically different from Service + mostly-phone + judgment. Copy/template rewrite, not UX rewrite. | Closes OQ1. Real tangible weight to every dropdown pick. | 2026-06-27 |
-| D14 | **Add "Email this spec to your boss" as the topmost CTA above Book a Demo + Copy.** Opens mailto: with subject + body pre-filled with the spec. | Closes OQ2. Highest-leverage conversion mechanic — the spec gets sent to a second stakeholder without InstaLILY paying for it. | 2026-06-27 |
-| D15 | NO shareable visual card for v1. | Closes OQ3. Defer to v2 roadmap (section 16). | 2026-06-27 |
-| D16 | Discovery checklist stays on the spec page. Not a separate downloadable PDF for v1. | Closes OQ4. Defer to v2 roadmap. | 2026-06-27 |
-| D17 | NO per-section confidence indicators in v1. The benchmark match pill is the only confidence visualization. | Closes OQ5. Avoid over-engineering. Defer to v2. | 2026-06-27 |
+| # | Decision | Rationale |
+|---|---|---|
+| D1 | **Webapp, not iOS.** | InstaLILY's frontline users live in desktop ERP/CRM. iOS friction (TestFlight install, no instant share) is wrong for this audience. |
+| D2 | **4 archetypes: Parts Counter, Claims Analyst, Service Dispatcher, Quote Builder.** | Matches InstaLILY's named verticals. 4 is enough breadth without dilution. Manufacturing is covered by Quote Builder (see §7 defense). Healthcare claims are narrowed to P&C in v1 (see §7 defense). |
+| D3 | **Step 1 is archetype card pick only. No free text.** | Free text in step 1 prevents tailored downstream questions. The archetype IS the routing key for the entire pathway. |
+| D4 | **Step 2 is dropdowns, not free text.** | Free text is friction-death for frontline operators. Dropdowns also force defensible output composition (we know exactly what they picked). |
+| D5 | **Step 2 dropdown labels are shared across archetypes, but the output copy is archetype × pick-specific.** | Parts + digital-in-system + rule-based produces different output narrative than Claims + digital-in-system + rule-based. Universal labels keep the UX clean; specific output gives every pick real weight. |
+| D6 | **Zero fabricated numbers anywhere in the output.** Every output claim traces to either a user input or the one cited public source (SRS Distribution). | The artifact is a Product Associate submission. PM credibility cannot survive a fabricated number being caught. |
+| D7 | **Cite only the SRS Distribution case.** It is the only publicly verifiable InstaLILY benchmark. | Citing anything else would require speculation. The constraint is also a feature: it forces the §9 rationale (see "Why we compare against SRS" inline note). |
+| D8 | **The output explicitly explains why SRS is the only comparable AND what the production version would do with internal access.** This appears on the user-facing output page, not just in this spec. | Reframes the public-data limitation as a product-thinking-out-loud signal. The honesty is the product. |
+| D9 | **The application hub page leads with the anticipated PM objection + defense (parallel path, not replacement).** | The strongest single signal that the candidate thinks like a PM is anticipating the hardest objection and answering it before it's raised. |
+| D10 | **Primary user is the frontline operator. The hiring committee judges by how well we served the operator.** | Resolves the audience-tension dodge identified in critique. Where the two audiences want different things, operator wins. |
+
+### §4b. Implementation notes (tactical choices, not strategy)
+
+These are settled but routine — the kind of choice any reasonable team would make differently and still ship the same product. They live here so they don't pollute the strategic decisions table.
+
+- Stack: Vite + React 19 + TypeScript + Tailwind 3 + Framer Motion + React Router 7
+- Deploy: GitHub Pages from `gh-pages` branch via `gh-pages` npm package
+- URL pattern: one repo, two routes (`/` = application hub, `/quickstart` = demo)
+- Output page section title: "What the public case study tells us" (not "How comparable is your situation?")
+- v1 scope cuts (deferred to v2): no shareable visual card, no downloadable discovery PDF, no per-section confidence indicators, no LLM call (smart templating only), no per-archetype dropdown labels (output copy carries the archetype weight instead)
+- CTAs on output page: **primary** Book a Demo, **secondary** Copy the spec, **tertiary** Email to your boss (mailto with pre-filled spec) — the email option is present but not topmost (see critique §7 — the realistic conversion rate on unsolicited boss-emails is low; we keep it as a low-cost optional channel but don't sacrifice the primary CTA for it)
 
 ---
 
@@ -93,6 +99,15 @@ All open questions from v0.1 (OQ1–OQ5) have been resolved in section 4 (D13–
 ## 6. The 4 archetype user journeys (the heart of this spec)
 
 Each archetype has a unique pathway. Every dropdown pick has a defined effect on the output. This section is the contract between what we ask and what we produce.
+
+### Defense: why these 4 archetypes, not 5 or 7
+
+The adversarial critique pass flagged two valid concerns: "Manufacturing is missing" and "Healthcare claims is shoehorned in with P&C." Both are real. The responses:
+
+- **Manufacturing is covered by Quote Builder.** A sales engineer at a manufacturer building configured BOM-based quotes IS the Quote Builder archetype. We are NOT covering shop-floor production-line workflows (machine operator, line lead, quality control) — those are a different InstaWorker shape entirely and would warrant a separate Manufacturing Operations archetype in v2. If a manufacturer reading this came in via "shop-floor" intent, they would feel under-served.
+- **Healthcare claims and P&C claims are different workflows.** They have been collapsed into one "Claims Analyst" archetype in v1 because the structural pattern (intake → policy logic → routing) is similar enough at the archetype level. The dropdown options are written with a P&C lean. A healthcare prior-authorization analyst would still get a useful output but the framing would not feel native. v2 should split Claims into "P&C Claims" and "Healthcare Authorization" with distinct task options and InstaBrain modules.
+
+Why not just add Manufacturing Operations and Healthcare Authorization to v1? Time. Each new archetype is roughly 200 lines of templated copy + a tested user journey. We chose four to ship at quality vs. seven to ship at half-quality. That's the trade-off being made deliberately.
 
 ### Universal structure
 
@@ -308,29 +323,45 @@ This is the contract. Every output element is composed from a defined set of inp
 
 ---
 
-## 9. Benchmark scoring algorithm (defensible math)
+## 9. SRS-similarity score (renamed from "benchmark scoring")
 
-The SRS Distribution case study is the only publicly verifiable InstaLILY benchmark. We grade structural similarity to SRS as a transparent score (0–6.5 points):
+### What this is, honestly
 
-| Signal | Points if matches SRS |
-|---|---|
-| Archetype = Parts | +2 |
-| Archetype = Quote | +1 |
-| Data State = digital-in-system | +1 |
-| Data State = digital-in-email | +0.5 |
-| Decision Complexity = mostly-rule-based | +1 |
-| Decision Complexity = mixed-with-override | +1 |
-| Frequency = hundreds-daily | +1 |
-| Frequency = tens-daily | +0.5 |
-| Company size ≥ 200 | +1 |
-| Vertical = industrial-distribution | +1 |
+This is **not** a benchmark of InstaWorker performance. It is a similarity-to-SRS score, dressed plainly. We pick SRS as the comparable because it is the *only* InstaLILY case study with public, verifiable outcomes (quote turnaround 6 days → minutes, ~10% revenue uplift on parts business). Comparing against anything else would require speculation we have no right to produce.
 
-**Thresholds:**
-- Score ≥ 5 → "Close public reference"
-- Score 2.5 to 4.9 → "Partial overlap"
-- Score < 2.5 → "Different shape than public case"
+The score answers exactly one question: **how structurally similar is this user's workflow to the SRS case?** Higher similarity = the SRS published outcomes are a directionally useful reference. Lower similarity = SRS is the wrong comparable, and the user should know it.
 
-**Why these weights:** Archetype is double-weighted because the SRS case is fundamentally a parts-distribution case. Data State and Decision Complexity are weighted equally because both materially determine automation feasibility. Volume + company size + vertical are tiebreakers.
+### Why this needs to appear on the user-facing output page (not buried in this doc)
+
+The output page must include an inline note titled **"Why we compare against SRS"** that says, in plain English:
+
+> *"SRS Distribution is the only InstaLILY case study with public outcomes. Comparing against it is honest about what we can prove from the outside. The production version of this tool — running inside InstaLILY with access to every deployment — would match your workflow against the closest actual customer, not the one publicly cited one. Discovery is how that closer match gets surfaced."*
+
+This is the difference between an artifact that pretends to know things it doesn't and one that admits its limits while pointing at the better version. The latter is the kind of PM thinking that hires.
+
+### The score itself (simplified from v0.2)
+
+Four signals, each worth 0–2 points. Max score: 8. Named bands.
+
+| Signal | What we're checking | Points |
+|---|---|---|
+| **Archetype** | Is the user doing the same kind of work SRS does? Parts Counter = 2 (direct match), Quote Builder = 1 (adjacent: BOM/pricing), Claims or Service = 0 (different shape entirely). | 0 / 1 / 2 |
+| **Data state** | Is the input already structured in a system of record? digital-in-system = 2, digital-in-email = 1, anything else = 0. SRS is digital ERP; that's where the automation feasibility lives. | 0 / 1 / 2 |
+| **Decision complexity** | Are decisions mostly rules-based? mostly-rule-based = 2, mixed = 1, mostly-judgment = 0. Rules-based work is where straight-through processing works; judgment work always needs human-in-loop. | 0 / 1 / 2 |
+| **Volume × team scale** | Is there enough repetition for ROI math to matter? hundreds-daily + 200+ company = 2, tens-daily or 200+ alone = 1, less = 0. | 0 / 1 / 2 |
+
+**Bands:**
+- **Score ≥ 6** → "Close public reference" — SRS outcomes are a defensible directional reference
+- **Score 3–5** → "Partial overlap" — SRS gives directional intuition; closer comparable would come from internal data
+- **Score 0–2** → "Different shape than public case" — SRS is the wrong reference; the relevant comparable lives in InstaLILY's internal deployments
+
+**Why these bands and not other thresholds:** Each band corresponds to a meaningfully different recommendation the user should hear. 6+ means we have evidence the publicly cited numbers translate to their case. 3–5 means we have *some* evidence but not enough to defend specific number transfer. 0–2 means SRS is actively misleading; the right answer is a different deployment we don't have public access to. The bands are derived from the recommendation we want to issue, not the other way around.
+
+### What this score cannot do (and we say so)
+
+- It cannot tell you specific hours saved, accuracy %, or ROI numbers for your situation. Those require actual measurement.
+- It cannot account for data quality variance, edge-case volume, or org-specific change management — all of which materially affect real outcomes.
+- It is a similarity score against one example. The production version (see §16) would run similarity against InstaLILY's full deployment history.
 
 **What we do NOT do:** Pretend to compute hours saved or accuracy %. Those are functions of actual customer data we don't have.
 
@@ -338,26 +369,35 @@ The SRS Distribution case study is the only publicly verifiable InstaLILY benchm
 
 ## 10. Conversion mechanics — how the output gets the user to act
 
-The spec page is where conversion happens. Three things make it convert:
+The spec page is where conversion happens. Three principles drive design; three patterns we intentionally refuse.
 
 ### a) Specificity → ownership
-The spec uses the user's actual picks throughout. They see "your" workflow, "your" tools, "your" vertical. They cannot dismiss it as generic. This is the foundation of all other conversion mechanics.
+The spec uses the user's actual picks throughout. They see "your" workflow, "your" tools, "your" vertical. They cannot dismiss it as generic. This is the foundation; everything else depends on it.
 
 ### b) Share-ability → multi-stakeholder buying
-The spec is designed to be sent rep → boss → procurement. The "Copy the spec" button produces clean Markdown. (OQ2: should we add "Email to boss" as a higher-leverage variant?)
-
-In B2B enterprise sales, the deal is closed when *multiple stakeholders* are aligned. A demo call reaches one person. A shared spec reaches three.
+In B2B enterprise sales, deals close when *multiple stakeholders* align. A demo call reaches one person. A spec the rep can copy/email/screenshot reaches three. The "Copy the spec" button produces clean Markdown formatted for pasting into email or Slack. The "Email to your boss" tertiary CTA opens a mailto: with the spec pre-filled — present, but **not** elevated to topmost (see CTA hierarchy in §4b).
 
 ### c) Loss aversion → urgency
-The discovery checklist is framed as "what discovery would establish" — implying there's measurable value being left on the table that the user hasn't measured yet. This is gentle loss aversion. Not manipulative; just honest.
+The discovery checklist is framed as "what discovery would establish" — implying there's measurable value being left on the table that the user hasn't measured yet. Gentle loss aversion. Not manipulative; just honest.
 
-### What we do NOT do (and why)
+### What we explicitly refuse and why
+
 - **No fake urgency.** ("Book in the next 5 minutes!" — trash.)
 - **No fake scarcity.** ("Only 3 demo slots left!" — trash.)
 - **No fake social proof.** ("Used by 1,000+ teams" — false, would burn credibility instantly.)
 - **No autoplay popups.** Insulting to the user.
 
-The conversion mechanic is: useful spec + share-able + clear next steps. That's it.
+### Honest caveat on the absence of social proof
+
+We have no live users. We have no testimonials. We have no usage numbers. The principled "we refuse fake social proof" stance is also a *convenient* stance, because we have nothing real to put there. The mitigation: the spec page itself is the proof — if it produces a credible, specific, share-worthy artifact in 60 seconds, that *is* the social proof. The user's own experience replaces the testimonial they can't see.
+
+### Conversion mechanics we are not using that are sometimes worth considering
+
+For honesty, naming what we left on the table:
+
+- **Progress disclosure with social anchor** ("80% of users finish this flow") — fake at v1 since we have no users, but a real lever at scale.
+- **Commitment escalation** (asking for email before the spec rather than after) — boosts conversion but trades against the operator-first principle (no friction before value).
+- **A single concrete next-action with a deadline** ("Bring this spec to your next standup") — worth piloting if this product had real distribution. Out of scope for the application artifact.
 
 ---
 
@@ -425,10 +465,12 @@ The conversion mechanic is: useful spec + share-able + clear next steps. That's 
 |---|---|
 | Hiring committee sees this and thinks "this is just a marketing demo" | Application hub page leads with the strategic frame + objection defense; PRD reinforces it. The artifact's job is to PROVE the strategy, not be the strategy. |
 | Someone at InstaLILY has already considered self-serve and decided against it | Acknowledged in hub page: "Honest caveat: I don't have your internal close-rate data. If you've considered this and decided against it, I'd want to know why — that's the right second-round conversation." |
+| **Self-serve dilutes lead quality — buries high-intent buyers under tire-kickers, makes the SDR team's job harder not easier** | This is a real and unaddressed risk in v1. The honest mitigation: in production, the qualified-via-Quickstart leads get a different routing flag than direct Book-a-Demo leads. We label them "Quickstart-qualified, archetype = X, similarity to SRS = high/partial/low" so the SDR can prioritize. v1 doesn't ship this; the application-facing PRD should call it out as a v2 requirement. |
 | The output looks too AI-generated and reads as low-effort | We're explicit that there's NO live LLM. The output is intentionally rule-based and traceable. This is a feature, not a bug. |
 | Amit Shah never sees it | Out of our control via the artifact itself. We rely on (a) the application going through Handshake and (b) Zul sending a direct LinkedIn message with the link after applying. |
 | The repo contains a security issue and someone notices | We're a static SPA. No backend, no secrets, no API keys. Worst case is a typo or unused dep. |
-| The benchmark grading algorithm is misunderstood | We publish the scoring table in the spec output (or at least the rationale) — see OQ5. |
+| **The author has not talked to a single real frontline operator** | Acknowledged honestly in §17. The artifact is grounded in InstaLILY's published materials, the SRS case study, and category research — NOT in customer interviews. This is a real limitation. The honest answer if asked: "I haven't yet. The first thing I'd do in this role is line up five operator calls in the lead vertical." That's a defensible posture; pretending otherwise would not be. |
+| The SRS-similarity score (§9) gets criticized as "fake math dressed up" | §9 has been rewritten to call itself what it is: a similarity score against the only public comparable. The bands are derived from the recommendation we want to issue, not from arbitrary numerics. The doc owns this directly. |
 
 ---
 
@@ -446,57 +488,59 @@ This means **the polish, the specificity, and the credibility of the spec page i
 
 ---
 
-## 16. Vision: the Quickstart IS an InstaWorker
+## 16. Vision: this product is itself an InstaWorker
 
-A meta-insight surfaced during spec review (credit: Zul, 2026-06-27): the Quickstart, taken to production, is itself an InstaWorker.
+One observation, stated humbly: the Quickstart, taken to production, is structurally an InstaWorker. It takes structured input from a frontline operator (the prospect), applies a vertical-aware knowledge layer (the archetype catalog + similarity scoring), and produces a structured output (a draft spec) that fits into an existing workflow (InstaLILY's sales-to-deployment funnel).
 
-**The structural argument:** It does what every InstaWorker does. It takes structured input from a frontline operator, applies a vertical-aware knowledge layer, and produces a structured, vertical-specific output that fits into an existing workflow (in this case, InstaLILY's sales-to-deployment funnel).
-
-**If InstaLILY shipped this as a real product, it would be called the Onboarding InstaWorker:**
-
-| Concept | v1 (this artifact) | Production version |
-|---|---|---|
-| Knowledge layer | 4 hand-curated archetype templates | Real InstaBrain trained on InstaLILY's deployed customer base — every shipped InstaWorker becomes a comparable lookup |
-| Comparable benchmark | The one public SRS case study | Vector-similarity match against actual customer outcomes (with permission) |
-| Output specificity | Templated narrative from user inputs | LLM-composed narrative with real internal-deployment references |
-| Discovery checklist | Static per archetype | Dynamic, drawing from what InstaLILY's own discovery process actually surfaces |
-| Conversion | "Email to your boss" + "Book a demo" | All of the above, plus auto-routing the prospect to the closest-fit AE based on archetype × vertical × volume |
-| Eat-their-own-dog-food | Concept only | The first InstaWorker built for InstaLILY's own sales motion |
+That observation does **not** mean "build me a six-version product line." Many tools share the input-output shape of an InstaWorker without being one. The honest claim is smaller: if InstaLILY *did* want to dogfood its own architecture against its own sales motion, this is roughly what v1 would look like — and the parts that v1 can't reach (real internal-deployment comparables, LLM-composed narratives, deployment-history lookups) are exactly the parts the §9 score is honest about leaving to discovery.
 
 **Why this framing matters for the application:**
 
-If we're submitting this as a Product Associate artifact, we're not just showing "I built a tool." We're showing "I understand your product so deeply that I built the first version of an InstaWorker you don't yet have, scoped for your own sales motion, using your published architecture." That's a meaningfully different level of demonstration.
+The submission is not "I built a tool." It's "I read InstaLILY's published architecture deeply enough to scope what an internal version of it would look like for InstaLILY's own funnel, and I built the parts I could from public materials only." That's a more interesting demonstration than a generic portfolio piece, and it's true — which is the only kind of framing that survives a thoughtful reading.
 
-This vision belongs in two places:
-1. The "production version" callout in the spec page (already there, can be sharpened post-spec review)
-2. The application-facing PRD's roadmap section (when we write it, it should explicitly frame the Quickstart as the wedge for an Onboarding InstaWorker product line — InstaLILY's own dogfood story)
+**What this is NOT:**
 
-**Roadmap (v2 and beyond, if this were a real InstaLILY product):**
+- A pitch for a new InstaLILY product line. That call is theirs to make, not the candidate's.
+- A claim that one weekend of work approximates an actual product roadmap.
+- A demand that anyone at InstaLILY take this insight seriously beyond noticing it.
 
-- **v1 (this artifact):** Templated, 4 archetypes, public benchmark only
-- **v2:** Add the deferred OQ3/OQ4/OQ5 items — shareable visual card, downloadable discovery PDF, per-section confidence indicators
-- **v3:** Real InstaBrain integration — internal customer comparables, vector-similarity matching
-- **v4:** LLM-composed output instead of templated, with citations to specific internal deployments
-- **v5:** Auto-routing of the qualified prospect to the right AE based on archetype × volume × vertical, with the spec attached
-- **v6:** A feedback loop — the prospect's eventual outcome data flows back into the InstaBrain, making every subsequent Quickstart better
+(Previous spec versions included a speculative v1→v6 roadmap. It has been removed — at this point in the candidate's relationship with the company, six speculative versions read as presumption, not vision.)
 
 ---
 
-## Open: Review checklist for Zul
+## 17. The customer-research gap (the limitation we own)
 
-Please walk through these before approving:
+This artifact has not been validated against a single real conversation with a real frontline operator. Not one parts counter lead, not one claims analyst, not one service dispatcher. The archetypes, task options, dropdown choices, and output narratives are derived from:
 
-- [ ] Decisions in section 4 — anything you want to overturn? (D13–D17 are newly added)
-- [ ] Open questions section 5 — clean (all resolved)
-- [ ] User journeys in section 6 — any archetype that doesn't feel right? Any task or output option missing?
-- [ ] Benchmark scoring in section 9 — weights feel right?
-- [ ] Conversion mechanics in section 10 — anything missing? (D14 will add "Email to your boss" as third CTA — adjust this section after code changes)
-- [ ] Out-of-scope list in section 13 — anything you'd actually want in v1?
-- [ ] The "single most important thing" in section 15 — agreed?
-- [ ] **NEW: The Quickstart-as-InstaWorker vision in section 16 — strong enough to lead the application-facing PRD with?**
+- InstaLILY's published materials (homepage, SRS Distribution case study, Google Cloud launch, careers page, leadership LinkedIn)
+- The Product Associate job description
+- Category research on B2B vertical AI and industrial-distribution workflows
+- The author's reasoning about what each role's day looks like, based on the above
 
-Once you approve (or send back with changes), I'll:
-1. Apply the spec-approved code changes (D13 archetype × pick-specific copy rewrite, D14 "Email to your boss" CTA)
-2. Write the application-facing PRD ("Make the Learning Layer Visible"), with the Onboarding InstaWorker vision as the headline roadmap arc
-3. Tailor the resume
-4. Hand you the cover-letter teaser for the Handshake submission
+That is **research, not validation.** It is the difference between a product idea built from desk work and a product idea built from operator interviews. Both are legitimate starting points; only one survives contact with reality without modification.
+
+### Why we did not close this gap before submitting
+
+Two reasons, stated honestly:
+
+1. **Time.** Cold outreach to a parts counter lead this weekend would not reliably produce a scheduled call before the Monday morning submission window. Faking the citation would be worse than admitting the gap.
+2. **Scope honesty.** This is a job application artifact, not a real product. Spending the available hours on a fifth-archetype interview before shipping the first four well would be optimizing the wrong thing.
+
+### What we would do differently if this were a real product, and what the candidate would do in the role
+
+- **Week 1 in the role:** identify five real frontline operators across the four archetypes via warm intros from InstaLILY's existing customer relationships. 30-minute calls each.
+- **Week 2:** synthesize what was wrong about the archetypes, the dropdowns, the output framing. Most assumptions in this spec would be partially incorrect; that's the value of the calls.
+- **Week 3:** ship a revised version with operator-validated copy across at least two archetypes.
+- **Week 4:** measure whether the validated archetypes outperform the unvalidated ones on completion rate, "Email to your boss" use, and demo-booked rate.
+
+This is the response to the interview question *"have you talked to a real frontline operator?"* The answer is "not yet, here is why, and here is what I would do first." The honest answer is more defensible than any clever workaround.
+
+---
+
+## Change log
+
+- **v0.1** (2026-06-27): Initial draft with 12 ratified decisions, 5 open questions, full archetype journeys.
+- **v0.2** (2026-06-27): Resolved OQ1–OQ5 into D13–D17. Added §16 "Quickstart IS an InstaWorker" with a v1→v6 speculative roadmap.
+- **v0.3** (2026-06-28): Post-adversarial-critique revision. Slimmed strategic decisions from 17 to 10 (tactical choices moved to §4b Implementation notes). Addressed audience-conflation dodge in §3. Rewrote §9 to call itself a similarity score honestly. Demoted "Email to your boss" from topmost CTA to tertiary. Added lead-quality-dilution risk in §14 and customer-research gap acknowledgment in §17. Removed the v1→v6 roadmap from §16. Tightened the Quickstart-IS-InstaWorker framing to be smaller and more humble.
+
+The spec is now read-only for v1 implementation. Subsequent changes require a new version section above with an explicit reason.
