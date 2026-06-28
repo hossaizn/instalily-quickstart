@@ -1,32 +1,50 @@
-# React + TypeScript + Vite
+# InstaWorker Quickstart
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A self-serve top-of-funnel concept for [InstaLILY](https://instalily.ai), built in a weekend as the artifact for a Product Associate application.
 
-Currently, two official plugins are available:
+## Links
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Live application hub:** [hossaizn.github.io/instalily-quickstart](https://hossaizn.github.io/instalily-quickstart)
+- **Live Quickstart demo:** [hossaizn.github.io/instalily-quickstart/quickstart](https://hossaizn.github.io/instalily-quickstart/quickstart)
+- **Resume:** [hossaizn.github.io/instalily-quickstart/resume.html](https://hossaizn.github.io/instalily-quickstart/resume.html)
+- **PRD:** [docs/application-prd.md](docs/application-prd.md)
 
-## React Compiler
+## What this is
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+A five-screen web flow that turns a frontline operator's workflow description into a draft InstaWorker spec, graded against the only public InstaLILY case study (SRS Distribution). The spec is built to be forwarded rep to boss to procurement, generating multi-stakeholder demand on top of the existing Book a Demo channel.
 
-## Expanding the Oxlint configuration
+The full reasoning, anticipated objections, success metrics, and roadmap are in [the PRD](docs/application-prd.md). The strategic frame and context for the submission are in the [application hub](https://hossaizn.github.io/instalily-quickstart).
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Stack
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+React 19 · TypeScript · Vite · Tailwind 3 · Framer Motion · React Router 7. Static SPA, no backend, no API keys. Deployed via `gh-pages` to GitHub Pages.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Opens at `http://localhost:5173/`.
+
+## Repo structure
+
+```
+src/
+├── App.tsx                       # Router (/ = hub, /quickstart = demo)
+├── pages/
+│   ├── ApplicationHub.tsx        # The submission hub at /
+│   └── Quickstart.tsx            # 5-screen orchestrator at /quickstart
+├── components/quickstart/        # The 5 screens
+├── lib/
+│   ├── types.ts                  # State and output type shapes
+│   ├── templates.ts              # Archetype catalog + spec generation
+│   └── storage.ts                # localStorage persistence
+public/resume.html                # Standalone polished HTML resume
+docs/application-prd.md           # Strategic PRD for the submission
+```
+
+## Notes
+
+Built solo by Zulqarnayan Hossain. Not officially affiliated with InstaLILY. No InstaLILY assets used; all references are to the publicly available SRS Distribution case study and InstaLILY's published architecture.
