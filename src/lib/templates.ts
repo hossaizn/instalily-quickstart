@@ -264,21 +264,13 @@ function scoreSimilarityToSRS(state: QuickstartState): number {
 
 function buildBenchmark(state: QuickstartState): ComparableBenchmark {
   const score = scoreSimilarityToSRS(state);
-  const matchLevel: ComparableBenchmark['matchLevel'] = score >= 5 ? 'high' : score >= 3 ? 'partial' : 'low';
+  const matchLevel: ComparableBenchmark['matchLevel'] = score >= 5 ? 'high' : score >= 2.5 ? 'partial' : 'low';
 
   const meta = state.archetype ? archetypeMeta(state.archetype) : null;
   const archetypeLabel = meta ? meta.cardTitle : 'your role';
-  const verticalLabel = state.context.vertical && state.context.vertical !== 'other'
-    ? state.context.vertical.replace(/-/g, ' ')
-    : '';
 
-  const reasoning = matchLevels(state, archetypeLabel, verticalLabel)[matchLevel];
-
-  const whatThisMeans = {
-    high: 'The published SRS numbers are a defensible directional benchmark for what InstaLILY could do on your workflow. Treat them as the ceiling of what to validate in discovery, not as a quote.',
-    partial: 'The SRS case study gives a directional range, but the structural differences mean your actual outcomes could land meaningfully above or below it. Discovery would identify a closer-matching deployment from InstaLILY\'s internal data.',
-    low: 'The SRS benchmark is not the right comparable for your workflow. The InstaLILY team would point to a different deployment as the relevant baseline — that data lives inside their account, not on the public site.',
-  }[matchLevel];
+  const reasoning = matchReasoning(state, archetypeLabel)[matchLevel];
+  const whatThisMeans = whatItMeans(state, archetypeLabel)[matchLevel];
 
   return {
     matchLevel,
@@ -289,19 +281,30 @@ function buildBenchmark(state: QuickstartState): ComparableBenchmark {
   };
 }
 
-function matchLevels(
+function matchReasoning(
   state: QuickstartState,
-  archetypeLabel: string,
-  verticalLabel: string
+  archetypeLabel: string
 ): Record<ComparableBenchmark['matchLevel'], string> {
-  const freqLabel = labelFor(FREQUENCY_OPTIONS, state.context.frequency).toLowerCase();
   const dataStateLabel = labelFor(DATA_STATE_OPTIONS, state.workflow.dataState).toLowerCase();
   const decisionLabel = labelFor(DECISION_COMPLEXITY_OPTIONS, state.workflow.decisionComplexity).toLowerCase();
 
   return {
-    high: `You picked ${archetypeLabel}${verticalLabel ? ` in ${verticalLabel}` : ''}, ${dataStateLabel}, ${decisionLabel}, ${freqLabel || 'high volume'}. This is structurally close to the published SRS Distribution case: parts distribution, digital ERP workflow, rule-based with override, high volume.`,
-    partial: `You picked ${archetypeLabel}${verticalLabel ? ` in ${verticalLabel}` : ''}, ${dataStateLabel}, ${decisionLabel}, ${freqLabel || 'modest volume'}. There is partial overlap with the SRS case study, but the differences mean the benchmark numbers transfer directionally, not literally.`,
-    low: `You picked ${archetypeLabel}${verticalLabel ? ` in ${verticalLabel}` : ''}, ${dataStateLabel}, ${decisionLabel}, ${freqLabel || 'this cadence'}. SRS was high-volume rule-based parts distribution in ERP. Your workflow has fundamentally different shape, which means the SRS benchmark would mislead more than inform.`,
+    high: `Your workflow shape — ${archetypeLabel}, ${dataStateLabel}, ${decisionLabel} — overlaps meaningfully with the published SRS Distribution deployment. Both are digital, structured, repeatable work where rules carry most of the decision.`,
+    partial: `Your workflow shares some shape with the SRS case (mostly: ${dataStateLabel}), but the archetype and decision pattern are different enough that the published numbers won't transfer one-to-one.`,
+    low: `The public case study (SRS Distribution) is high-volume rule-based parts work running in ERP. Your workflow is a different shape — ${archetypeLabel.toLowerCase()}, ${dataStateLabel}, ${decisionLabel}. Different shape calls for a different reference deployment.`,
+  };
+}
+
+function whatItMeans(
+  state: QuickstartState,
+  archetypeLabel: string
+): Record<ComparableBenchmark['matchLevel'], string> {
+  const workerName = state.archetype ? archetypeMeta(state.archetype).workerName : 'a vertical InstaWorker';
+
+  return {
+    high: `The SRS numbers (6 days to minutes, ~10% revenue uplift) are a defensible directional reference for what's possible on your workflow. Discovery would still calibrate against your actual volumes and data quality, but you'd start from a strong reference, not a cold guess.`,
+    partial: `The SRS case gives directional intuition for what's possible with a vertical InstaWorker, but the closer comparable would be an InstaLILY deployment that matches your archetype and your volume. That customer exists inside InstaLILY's account list — discovery would surface them as your real baseline.`,
+    low: `This is exactly the structural argument for InstaWorkers being vertical-specific. A ${workerName} is built differently than a Parts InstaWorker — the relevant benchmark is a customer running your shape, not the published case. That comparable lives inside InstaLILY's deployments. Discovery would identify it and use those numbers as the baseline.`,
   };
 }
 

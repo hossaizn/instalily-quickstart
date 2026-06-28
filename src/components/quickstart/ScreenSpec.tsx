@@ -136,12 +136,12 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
         transition={{ duration: 0.5, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
         className="card p-8 mb-6"
       >
-        <div className="flex items-baseline justify-between mb-1">
-          <h2 className="text-lg font-semibold">How comparable is your situation?</h2>
+        <div className="flex items-baseline justify-between mb-1 gap-3 flex-wrap">
+          <h2 className="text-lg font-semibold">What the public case study tells us</h2>
           <BenchmarkPill level={spec.benchmark.matchLevel} />
         </div>
         <p className="text-sm text-ink-muted mb-6">
-          Graded against the only publicly verifiable InstaLILY benchmark.
+          We grade what's verifiable from public data. The grade describes the benchmark's fit, not your situation.
         </p>
 
         <div className="rounded-lg bg-paper-warm p-5 ring-1 ring-ink/5 mb-5">
@@ -241,12 +241,12 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
 
 function BenchmarkPill({ level }: { level: 'high' | 'partial' | 'low' }) {
   const config = {
-    high: { label: 'High structural similarity', cls: 'bg-accent-soft text-accent' },
+    high: { label: 'Close public reference', cls: 'bg-accent-soft text-accent' },
     partial: { label: 'Partial overlap', cls: 'bg-paper-warm text-ink-soft ring-1 ring-ink/10' },
-    low: { label: 'Structurally different', cls: 'bg-ink/5 text-ink-muted ring-1 ring-ink/10' },
+    low: { label: 'Different shape than public case', cls: 'bg-paper-warm text-ink-soft ring-1 ring-ink/10' },
   }[level];
   return (
-    <span className={['text-xs font-medium px-2.5 py-1 rounded-full', config.cls].join(' ')}>
+    <span className={['text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap', config.cls].join(' ')}>
       {config.label}
     </span>
   );
