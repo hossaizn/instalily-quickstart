@@ -144,6 +144,13 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
           We grade what's verifiable from public data. The grade describes the benchmark's fit, not your situation.
         </p>
 
+        <div className="rounded-lg border border-accent/30 bg-accent-soft/50 p-5 mb-5">
+          <p className="label !text-accent mb-2">Why we compare against SRS</p>
+          <p className="text-sm text-ink-soft leading-relaxed">
+            SRS Distribution is the only InstaLILY case study with public outcomes. Comparing against it is honest about what we can prove from the outside. The production version of this tool, running inside InstaLILY with access to every deployment, would match your workflow against the closest <em className="italic">actual</em> customer, not the one publicly cited one. Discovery is how that closer match gets surfaced.
+          </p>
+        </div>
+
         <div className="rounded-lg bg-paper-warm p-5 ring-1 ring-ink/5 mb-5">
           <p className="label mb-2">Cited case study</p>
           <p className="font-serif text-base font-semibold mb-1">{spec.benchmark.citedCase.name}</p>
@@ -202,24 +209,33 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
         </p>
       </motion.section>
 
-      {/* CTAs */}
+      {/* CTAs: primary Book + secondary Copy + tertiary Email-to-boss */}
       <motion.div
         {...fadeUp}
         transition={{ duration: 0.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col sm:flex-row gap-3"
       >
-        <a
-          href="https://instalily.ai/contact"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary flex-1 !py-4 text-base"
-        >
-          Book a demo with this spec
-          <span aria-hidden>→</span>
-        </a>
-        <button onClick={copyToClipboard} className="btn-secondary flex-1 !py-4 text-base">
-          {copied ? '✓ Copied to clipboard' : 'Copy the spec'}
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <a
+            href="https://instalily.ai/contact"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary flex-1 !py-4 text-base"
+          >
+            Book a demo with this spec
+            <span aria-hidden>→</span>
+          </a>
+          <button onClick={copyToClipboard} className="btn-secondary flex-1 !py-4 text-base">
+            {copied ? '✓ Copied to clipboard' : 'Copy the spec'}
+          </button>
+        </div>
+        <div className="text-center mt-4">
+          <a
+            href={buildMailtoLink(state, spec)}
+            className="text-sm text-ink-muted hover:text-ink underline decoration-ink/20 hover:decoration-ink transition-colors"
+          >
+            or email this spec to your boss →
+          </a>
+        </div>
       </motion.div>
 
       <p className="text-xs text-ink-muted text-center mt-8 leading-relaxed max-w-2xl mx-auto">
@@ -237,6 +253,31 @@ export default function ScreenSpec({ state, spec, restart }: Props) {
       </p>
     </motion.div>
   );
+}
+
+function buildMailtoLink(state: QuickstartState, spec: SpecOutput): string {
+  const archetypeName = state.archetype ? archetypeMeta(state.archetype).cardTitle : 'our team';
+  const subject = `Worth a look — InstaWorker spec for ${archetypeName}`;
+  const url =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}${window.location.pathname.replace(/\/quickstart\/?$/, '')}/quickstart`
+      : 'https://hossaizn.github.io/instalily-quickstart/quickstart';
+  const body = [
+    'Hey,',
+    '',
+    `Ran through a tool that drafted what an AI teammate could do for our ${archetypeName.toLowerCase()} work.`,
+    '',
+    `It came back with a "${spec.workerName}" spec:`,
+    `${spec.tagline}`,
+    '',
+    'Worth a look — takes 60 seconds:',
+    url,
+    '',
+    "Want to see if their team would walk us through what something like this would look like for our setup.",
+    '',
+    'Thanks',
+  ].join('\n');
+  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 function BenchmarkPill({ level }: { level: 'high' | 'partial' | 'low' }) {

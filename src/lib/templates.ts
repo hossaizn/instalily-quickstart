@@ -12,9 +12,9 @@ import type {
   TeamSize,
 } from './types';
 
-// ---------------------------------------------------------------------------
+// ===========================================================================
 // Archetype catalog
-// ---------------------------------------------------------------------------
+// ===========================================================================
 
 interface ArchetypeMeta {
   key: Archetype;
@@ -139,9 +139,9 @@ export function archetypeMeta(key: Archetype): ArchetypeMeta {
   return ARCHETYPES.find((a) => a.key === key)!;
 }
 
-// ---------------------------------------------------------------------------
-// Shared dropdown option lists
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// Shared dropdown options (universal across archetypes per D5)
+// ===========================================================================
 
 export const DATA_STATE_OPTIONS: { value: DataState; label: string }[] = [
   { value: 'digital-in-system', label: 'Already digital, in our system of record' },
@@ -171,69 +171,139 @@ export const TEAM_SIZE_OPTIONS: { value: TeamSize; label: string }[] = [
   { value: 'large', label: '20+ people' },
 ];
 
-// ---------------------------------------------------------------------------
-// Workflow narrative generator (uses ALL the inputs)
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// Archetype × pick-specific clause libraries
+// Per D5: same dropdown LABELS, archetype × pick-specific OUTPUT copy.
+// ===========================================================================
+
+type ClauseMap<K extends string> = Record<K, string>;
+
+// --- Parts ---
+const PARTS_DATA_STATE: ClauseMap<DataState> = {
+  'digital-in-system': 'pulls the request directly from your ERP catalog, extracting SKUs, customer ID, qty, and any cross-reference flags in one read',
+  'digital-in-email': 'parses the inbound email or attached PO, extracting part numbers and customer context from free-form text (the messy reality of distributor inboxes)',
+  'mixed-digital-phone': 'consolidates the digital request with any counter-call notes, treating both streams as one normalized record',
+  'mostly-phone-paper': 'works against transcribed phone-intake notes — flagging that a 1–2 week digitization step would unlock ~3x more automation surface',
+};
+const PARTS_DECISION: ClauseMap<DecisionComplexity> = {
+  'mostly-rule-based': 'applies your customer-specific pricing tier, runs the cross-reference table for any short-stock SKUs, and surfaces the top 2–3 substitution options ranked by margin',
+  'mostly-judgment': "drafts the quote with rationale but flags it for counter-rep review — margin band, customer relationship history, or non-standard request all route to a human",
+  'mixed-with-override': 'auto-completes the standard pricing + cross-references, and surfaces only the cases that fall outside your playbook (custom margins, allocation conflicts) for human override',
+};
+const PARTS_OUTPUT: ClauseMap<string> = {
+  'quote-erp': 'a quote PDF goes to the customer and the line items land in your ERP with the right pricing tier and stock flags applied',
+  'sales-order': 'the sales order enters your ERP directly, ready for fulfillment with allocation already worked out',
+  'inventory-route': 'the request routes to ops with a pre-filled inventory check ticket — the slow part of the workflow gets a head start',
+  'price-hold': 'the priced quote is held in the customer record, ready for the next inbound touch from that customer',
+};
+
+// --- Claims ---
+const CLAIMS_DATA_STATE: ClauseMap<DataState> = {
+  'digital-in-system': 'pulls the FNOL directly from your claims system, extracting structured fields (policy #, claimant, loss type, date)',
+  'digital-in-email': 'parses the inbound FNOL email plus attached PDFs (police reports, photos, statements) into a structured claim record',
+  'mixed-digital-phone': 'consolidates the digital intake with phone-recorded statements, normalizing both into the same claim record',
+  'mostly-phone-paper': "transcribes the initial phone intake into a structured FNOL — flagging that fully-digital intake would unlock cleaner first-pass triage",
+};
+const CLAIMS_DECISION: ClauseMap<DecisionComplexity> = {
+  'mostly-rule-based': "applies your coverage matrix to the loss type, cites the relevant policy clause, and recommends an action with the specific reasoning trail",
+  'mostly-judgment': 'drafts a triage summary with likely path forward, but routes the actual decision to an adjuster — speed-up without removing judgment',
+  'mixed-with-override': "auto-closes the clear-coverage cases; surfaces the edge cases (state variances, prior claim flags, vendor disputes) to senior adjusters with full context attached",
+};
+const CLAIMS_OUTPUT: ClauseMap<string> = {
+  'queue-summary': "a triage summary lands in the adjuster's queue with the recommended action, the cited policy clauses, and the full document references",
+  'coverage-letter': 'the coverage decision is written to the claims system and the customer letter is drafted in your template, ready for adjuster sign-off',
+  'vendor-dispatch': 'the right vendor is dispatched from your preferred list based on geography + capacity, and the customer notification fires automatically',
+  'escalation': 'the case is routed to a senior adjuster with the recommended action, the rationale, and every supporting document tagged for fast review',
+};
+
+// --- Service ---
+const SERVICE_DATA_STATE: ClauseMap<DataState> = {
+  'digital-in-system': 'pulls the service request directly from your FSM, extracting equipment ID, customer ID, symptom signals, and SLA window in one read',
+  'digital-in-email': 'parses the inbound customer email or portal submission, extracting equipment identification and symptom keywords from natural-language descriptions',
+  'mixed-digital-phone': "consolidates customer phone notes with any FSM-side history on the equipment, building one normalized service request",
+  'mostly-phone-paper': "transcribes the inbound call into a structured service ticket — flagging that customer-portal intake would meaningfully cut dispatch time",
+};
+const SERVICE_DECISION: ClauseMap<DecisionComplexity> = {
+  'mostly-rule-based': 'applies your skills matrix, route windows, and SLA rules to pick the right tech, ETA, and parts list — surfacing the 2–3 most likely root causes from equipment history',
+  'mostly-judgment': 'drafts a recommended dispatch (tech + ETA + parts) but routes to a human dispatcher for the final call — especially for VIP customers or complex equipment',
+  'mixed-with-override': 'auto-dispatches the clean matches; surfaces the ambiguous cases (multiple tech matches, SLA conflicts, VIP routing) for dispatcher override with all context attached',
+};
+const SERVICE_OUTPUT: ClauseMap<string> = {
+  'work-order': "a fully-dispatched work order goes out with tech, ETA, parts list, and pre-staging instructions — the field already knows what they're walking into",
+  'customer-notify': 'the customer is notified with the confirmed ETA, tech name, and any prep instructions — reducing the "where is my tech?" call volume',
+  'fsm-update': 'the route in your FSM is updated with the new job slotted into the right window, with allocation already worked out',
+  'manager-escalation': 'the case routes to the service manager with the full diagnostic notes, the candidate dispatch options, and why each was a partial match',
+};
+
+// --- Quote ---
+const QUOTE_DATA_STATE: ClauseMap<DataState> = {
+  'digital-in-system': 'pulls the requirements directly from your CRM opportunity or CPQ draft, extracting structured spec fields',
+  'digital-in-email': 'parses the customer RFQ document or email thread, extracting requirements from free-form prose (the messy reality of B2B sales engineering)',
+  'mixed-digital-phone': "consolidates the rep's discovery-call notes with the CRM opportunity record into one normalized requirements doc",
+  'mostly-phone-paper': "structures the sales rep's notes into a configurable requirements doc — flagging that templated discovery questions would cut quote turnaround time meaningfully",
+};
+const QUOTE_DECISION: ClauseMap<DecisionComplexity> = {
+  'mostly-rule-based': 'builds the configuration against your BOM rules, prices it against contract terms, and validates lead times against your production calendar',
+  'mostly-judgment': 'drafts the configuration and pricing, then routes to the sales engineer for any non-standard config decisions or executive pricing calls',
+  'mixed-with-override': 'auto-completes the rule-bound configuration and standard pricing; surfaces ambiguous configs and discount-approval cases for AE review',
+};
+const QUOTE_OUTPUT: ClauseMap<string> = {
+  'ae-review': "the quote document is sent to the AE for review and customer delivery, with the variance log (margin band, lead-time risk, non-standard terms) flagged",
+  'cpq': 'the configuration is drafted directly in your CPQ system, ready for the AE to add the customer-facing polish',
+  'bom-erp': 'the configured BOM is written to your ERP, ready for production planning to pick up',
+  'customer-revision': "the quote is held for the next customer revision cycle, with a clean variance log showing what changed from their last ask",
+};
+
+// Per-archetype lookup of clause libraries
+const ARCHETYPE_CLAUSES: Record<Archetype, {
+  dataState: ClauseMap<DataState>;
+  decision: ClauseMap<DecisionComplexity>;
+  output: ClauseMap<string>;
+}> = {
+  parts: { dataState: PARTS_DATA_STATE, decision: PARTS_DECISION, output: PARTS_OUTPUT },
+  claims: { dataState: CLAIMS_DATA_STATE, decision: CLAIMS_DECISION, output: CLAIMS_OUTPUT },
+  service: { dataState: SERVICE_DATA_STATE, decision: SERVICE_DECISION, output: SERVICE_OUTPUT },
+  quote: { dataState: QUOTE_DATA_STATE, decision: QUOTE_DECISION, output: QUOTE_OUTPUT },
+};
+
+// ===========================================================================
+// Workflow narrative generator (per D5: archetype × pick specific)
+// ===========================================================================
 
 function labelFor(opts: { value: string; label: string }[], value: string): string {
   return opts.find((o) => o.value === value)?.label ?? '';
 }
 
-function dataStateNarrative(s: DataState | ''): string {
-  switch (s) {
-    case 'digital-in-system':
-      return 'pulls directly from your system of record';
-    case 'digital-in-email':
-      return 'parses inbound email and PDF attachments';
-    case 'mixed-digital-phone':
-      return 'consolidates digital records and call notes';
-    case 'mostly-phone-paper':
-      return 'works against transcribed call notes (with a recommended digitization step)';
-    default:
-      return 'reads the inbound data';
-  }
-}
-
-function decisionNarrative(d: DecisionComplexity | ''): string {
-  switch (d) {
-    case 'mostly-rule-based':
-      return 'runs the same rules a senior person on your team would, end to end';
-    case 'mostly-judgment':
-      return 'drafts a recommended action with rationale; a human reviews before acting';
-    case 'mixed-with-override':
-      return 'auto-completes the rule-based portion and surfaces the judgment cases for human review';
-    default:
-      return 'applies your decision logic';
-  }
-}
-
 function buildWorkflowSteps(state: QuickstartState): WorkflowStep[] {
   if (!state.archetype) return [];
   const meta = archetypeMeta(state.archetype);
+  const clauses = ARCHETYPE_CLAUSES[state.archetype];
   const taskLabel = labelFor(meta.taskOptions, state.workflow.task) || 'this workflow';
-  const outputLabel = labelFor(meta.outputOptions, state.workflow.outputDestination) || 'completed work';
+
+  // Fallbacks for empty picks — should not happen in practice (form validates) but defensive.
+  const dataClause = clauses.dataState[state.workflow.dataState as DataState] ?? clauses.dataState['digital-in-system'];
+  const decisionClause = clauses.decision[state.workflow.decisionComplexity as DecisionComplexity] ?? clauses.decision['mixed-with-override'];
+  const outputClause = clauses.output[state.workflow.outputDestination] ?? Object.values(clauses.output)[0];
 
   return [
     {
       title: 'Read the request',
-      detail: `For "${taskLabel.toLowerCase()}", the InstaWorker ${dataStateNarrative(state.workflow.dataState)}, extracts the structured fields, and populates the working record.`,
+      detail: `For "${taskLabel.toLowerCase()}", the ${meta.workerName} ${dataClause}.`,
     },
     {
       title: 'Reason about it',
-      detail: `It ${decisionNarrative(state.workflow.decisionComplexity)}, citing the specific rules and historical patterns its decision was based on.`,
+      detail: `It then ${decisionClause}.`,
     },
     {
       title: 'Hand off cleanly',
-      detail: `Output goes where you expect it: ${outputLabel.toLowerCase()}. Every action lands with an audit trail, so your team can spot-check at any point.`,
+      detail: `On the way out: ${outputClause}. Every step lands with an audit trail your team can spot-check at any point.`,
     },
   ];
 }
 
-// ---------------------------------------------------------------------------
-// Comparable benchmark scorer
-// SRS Distribution case study is the only publicly verifiable InstaLILY benchmark.
-// We grade the user's situation by how structurally similar it is to SRS.
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// SRS-similarity score (per §9 v0.3: 4 signals × 0/1/2)
+// ===========================================================================
 
 const SRS_CASE = {
   name: 'SRS Distribution',
@@ -241,101 +311,95 @@ const SRS_CASE = {
   headline: 'Quote turnaround from 6 days to minutes. ~10% revenue uplift on parts business. Published with InstaLILY.',
 };
 
-function scoreSimilarityToSRS(state: QuickstartState): number {
-  let score = 0;
-  // SRS was parts distribution / quote building
-  if (state.archetype === 'parts') score += 2;
-  else if (state.archetype === 'quote') score += 1;
-  // SRS was digital in ERP
-  if (state.workflow.dataState === 'digital-in-system') score += 1;
-  else if (state.workflow.dataState === 'digital-in-email') score += 0.5;
-  // SRS was rule-based with override
-  if (state.workflow.decisionComplexity === 'mostly-rule-based') score += 1;
-  else if (state.workflow.decisionComplexity === 'mixed-with-override') score += 1;
-  // SRS was high-volume
-  if (state.context.frequency === 'hundreds-daily') score += 1;
-  else if (state.context.frequency === 'tens-daily') score += 0.5;
-  // SRS is mid-large distributor
-  if (state.context.companySize === '200-1000' || state.context.companySize === '1000-5000' || state.context.companySize === 'over-5000') score += 1;
-  // SRS is industrial distribution
-  if (state.context.vertical === 'industrial-distribution') score += 1;
-  return score;
+function scoreArchetype(a: Archetype | null): 0 | 1 | 2 {
+  if (a === 'parts') return 2;
+  if (a === 'quote') return 1;
+  return 0;
+}
+function scoreDataState(d: DataState | ''): 0 | 1 | 2 {
+  if (d === 'digital-in-system') return 2;
+  if (d === 'digital-in-email') return 1;
+  return 0;
+}
+function scoreDecision(d: DecisionComplexity | ''): 0 | 1 | 2 {
+  if (d === 'mostly-rule-based') return 2;
+  if (d === 'mixed-with-override') return 1;
+  return 0;
+}
+function scoreVolumeAndScale(state: QuickstartState): 0 | 1 | 2 {
+  const isLargeCo =
+    state.context.companySize === '200-1000' ||
+    state.context.companySize === '1000-5000' ||
+    state.context.companySize === 'over-5000';
+  if (state.context.frequency === 'hundreds-daily' && isLargeCo) return 2;
+  if (state.context.frequency === 'hundreds-daily' || state.context.frequency === 'tens-daily' || isLargeCo) return 1;
+  return 0;
 }
 
 function buildBenchmark(state: QuickstartState): ComparableBenchmark {
-  const score = scoreSimilarityToSRS(state);
-  const matchLevel: ComparableBenchmark['matchLevel'] = score >= 5 ? 'high' : score >= 2.5 ? 'partial' : 'low';
+  const aScore = scoreArchetype(state.archetype);
+  const dScore = scoreDataState(state.workflow.dataState);
+  const decScore = scoreDecision(state.workflow.decisionComplexity);
+  const vScore = scoreVolumeAndScale(state);
+  const total = aScore + dScore + decScore + vScore;
+
+  const matchLevel: ComparableBenchmark['matchLevel'] =
+    total >= 6 ? 'high' : total >= 3 ? 'partial' : 'low';
 
   const meta = state.archetype ? archetypeMeta(state.archetype) : null;
   const archetypeLabel = meta ? meta.cardTitle : 'your role';
+  const workerName = meta ? meta.workerName : 'a vertical InstaWorker';
 
-  const reasoning = matchReasoning(state, archetypeLabel)[matchLevel];
-  const whatThisMeans = whatItMeans(state)[matchLevel];
-
-  return {
-    matchLevel,
-    matchScore: score,
-    reasoning,
-    citedCase: SRS_CASE,
-    whatThisMeansForYou: whatThisMeans,
-  };
-}
-
-function matchReasoning(
-  state: QuickstartState,
-  archetypeLabel: string
-): Record<ComparableBenchmark['matchLevel'], string> {
   const dataStateLabel = labelFor(DATA_STATE_OPTIONS, state.workflow.dataState).toLowerCase();
   const decisionLabel = labelFor(DECISION_COMPLEXITY_OPTIONS, state.workflow.decisionComplexity).toLowerCase();
 
-  return {
-    high: `Your workflow shape — ${archetypeLabel}, ${dataStateLabel}, ${decisionLabel} — overlaps meaningfully with the published SRS Distribution deployment. Both are digital, structured, repeatable work where rules carry most of the decision.`,
-    partial: `Your workflow shares some shape with the SRS case (mostly: ${dataStateLabel}), but the archetype and decision pattern are different enough that the published numbers won't transfer one-to-one.`,
+  const reasoning: Record<ComparableBenchmark['matchLevel'], string> = {
+    high: `Your workflow shape (${archetypeLabel}, ${dataStateLabel}, ${decisionLabel}) overlaps meaningfully with the published SRS Distribution deployment. Both are digital, structured, repeatable work where rules carry most of the decision.`,
+    partial: `Your workflow shares some shape with the SRS case (mostly: ${dataStateLabel}), but the archetype or decision pattern is different enough that the published numbers won't transfer one-to-one.`,
     low: `The public case study (SRS Distribution) is high-volume rule-based parts work running in ERP. Your workflow is a different shape — ${archetypeLabel.toLowerCase()}, ${dataStateLabel}, ${decisionLabel}. Different shape calls for a different reference deployment.`,
   };
-}
 
-function whatItMeans(
-  state: QuickstartState
-): Record<ComparableBenchmark['matchLevel'], string> {
-  const workerName = state.archetype ? archetypeMeta(state.archetype).workerName : 'a vertical InstaWorker';
-
-  return {
+  const whatThisMeans: Record<ComparableBenchmark['matchLevel'], string> = {
     high: `The SRS numbers (6 days to minutes, ~10% revenue uplift) are a defensible directional reference for what's possible on your workflow. Discovery would still calibrate against your actual volumes and data quality, but you'd start from a strong reference, not a cold guess.`,
     partial: `The SRS case gives directional intuition for what's possible with a vertical InstaWorker, but the closer comparable would be an InstaLILY deployment that matches your archetype and your volume. That customer exists inside InstaLILY's account list — discovery would surface them as your real baseline.`,
     low: `This is exactly the structural argument for InstaWorkers being vertical-specific. A ${workerName} is built differently than a Parts InstaWorker — the relevant benchmark is a customer running your shape, not the published case. That comparable lives inside InstaLILY's deployments. Discovery would identify it and use those numbers as the baseline.`,
   };
+
+  return {
+    matchLevel,
+    matchScore: total,
+    reasoning: reasoning[matchLevel],
+    citedCase: SRS_CASE,
+    whatThisMeansForYou: whatThisMeans[matchLevel],
+  };
 }
 
-// ---------------------------------------------------------------------------
-// Discovery questions (real metrics a PM would actually ask)
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// Discovery checklist
+// ===========================================================================
 
 function buildDiscoveryItems(state: QuickstartState): DiscoveryItem[] {
-  const base: DiscoveryItem[] = [];
+  const base: DiscoveryItem[] = [
+    {
+      metric: 'Baseline cycle time per request, today (in minutes)',
+      whyItMatters: "Without this number, no time-saved claim is defensible. It's the denominator for every ROI calculation.",
+    },
+    {
+      metric: 'Current error / rework rate on this workflow',
+      whyItMatters: 'Tells us whether the bottleneck is speed or quality. Different bottleneck = different InstaWorker shape.',
+    },
+    {
+      metric: 'Aggregate hours your team spends on this work per week',
+      whyItMatters: 'Required to translate a per-request time saving into a team-level ROI number.',
+    },
+  ];
+
   if (!state.archetype) return base;
 
-  // Universal questions every engagement would ask
-  base.push({
-    metric: 'Baseline cycle time per request, today (in minutes)',
-    whyItMatters: 'Without this number, no time-saved claim is defensible. It\'s the denominator for every ROI calculation.',
-  });
-
-  base.push({
-    metric: 'Current error / rework rate on this workflow',
-    whyItMatters: 'Tells us whether the bottleneck is speed or quality. Different bottleneck = different InstaWorker shape.',
-  });
-
-  base.push({
-    metric: 'Aggregate hours your team spends on this work per week',
-    whyItMatters: 'Required to translate a per-request time saving into a team-level ROI number.',
-  });
-
-  // Archetype-specific question
   const archetypeSpecific: Record<Archetype, DiscoveryItem> = {
     parts: {
       metric: 'Quote-to-order conversion rate today + % of quotes you never follow up on',
-      whyItMatters: 'The biggest InstaWorker lever in parts is recovering abandoned quotes — but only if there\'s a meaningful abandonment rate to recover.',
+      whyItMatters: "The biggest InstaWorker lever in parts is recovering abandoned quotes — but only if there's a meaningful abandonment rate to recover.",
     },
     claims: {
       metric: 'Auto-adjudication rate today, and senior-adjuster escalation rate',
@@ -343,7 +407,7 @@ function buildDiscoveryItems(state: QuickstartState): DiscoveryItem[] {
     },
     service: {
       metric: 'First-time-fix rate today + average reschedule rate',
-      whyItMatters: 'Service automation\'s value depends entirely on whether better diagnosis up-front reduces truck-rolls. These two metrics measure that.',
+      whyItMatters: "Service automation's value depends on whether better diagnosis up-front reduces truck-rolls. These two metrics measure that.",
     },
     quote: {
       metric: 'Quote turnaround time, and % of quotes requiring discount-approval cycles',
@@ -353,7 +417,6 @@ function buildDiscoveryItems(state: QuickstartState): DiscoveryItem[] {
 
   base.push(archetypeSpecific[state.archetype]);
 
-  // Variance question if they picked judgment-heavy
   if (state.workflow.decisionComplexity === 'mostly-judgment') {
     base.push({
       metric: 'Variance: how often this workflow deviates from the common path',
@@ -364,18 +427,14 @@ function buildDiscoveryItems(state: QuickstartState): DiscoveryItem[] {
   return base;
 }
 
-// ---------------------------------------------------------------------------
-// Integrations
-// ---------------------------------------------------------------------------
+// ===========================================================================
+// Integrations + spec generator
+// ===========================================================================
 
 function deriveIntegrations(state: QuickstartState): string[] {
   if (state.context.tools.length > 0) return state.context.tools;
   return ['Your existing ERP', 'Email', 'CRM of record'];
 }
-
-// ---------------------------------------------------------------------------
-// Main: generate spec from state
-// ---------------------------------------------------------------------------
 
 export function generateSpec(state: QuickstartState): SpecOutput {
   if (!state.archetype) {
