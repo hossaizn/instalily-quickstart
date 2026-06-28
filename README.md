@@ -19,15 +19,6 @@ The full reasoning, anticipated objections, success metrics, and roadmap are in 
 
 React 19 · TypeScript · Vite · Tailwind 3 · Framer Motion · React Router 7. Static SPA, no backend, no API keys. Deployed via `gh-pages` to GitHub Pages.
 
-## Run locally
-
-```bash
-npm install
-npm run dev
-```
-
-Opens at `http://localhost:5173/`.
-
 ## Repo structure
 
 ```text
