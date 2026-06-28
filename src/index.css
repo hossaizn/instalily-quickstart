@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  ::selection {
+    @apply bg-accent text-paper;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif tracking-tight;
+  }
+}
+
+@layer components {
+  .container-prose {
+    @apply mx-auto px-6 max-w-prose;
+  }
+  .container-wide {
+    @apply mx-auto px-6 max-w-wide;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg
+           bg-ink text-paper font-medium text-sm
+           hover:bg-ink-soft transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-paper
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg
+           bg-paper-card text-ink font-medium text-sm
+           ring-1 ring-ink/10
+           hover:ring-ink/30 transition-all duration-150
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-paper;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
+           bg-paper-warm text-ink text-xs font-medium
+           ring-1 ring-ink/5;
+  }
+  .chip-interactive {
+    @apply chip cursor-pointer hover:bg-accent-soft hover:ring-accent/30 transition-all duration-150;
+  }
+  .label {
+    @apply text-xs font-semibold tracking-widest uppercase text-ink-muted;
+  }
+  .card {
+    @apply bg-paper-card rounded-xl ring-1 ring-ink/5 shadow-sm;
+  }
+}
