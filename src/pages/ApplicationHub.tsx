@@ -26,7 +26,7 @@ export default function ApplicationHub() {
       <section className="container-prose pt-16 md:pt-24 pb-12">
         <p className="label mb-5">Product Associate · InstaLILY</p>
         <h1 className="text-4xl md:text-6xl font-semibold leading-[1.02] mb-6 tracking-tight">
-          A self-serve top-of-funnel concept for InstaLILY, built in a weekend.
+          I built a self-serve top-of-funnel concept for InstaLILY in a weekend.
         </h1>
         <p className="text-xl text-ink leading-relaxed font-serif">
           The InstaWorker Quickstart is a parallel path to "Book a Demo," scoped to capture the ~97% of visitors who aren't sales-ready on first visit.
