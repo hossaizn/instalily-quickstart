@@ -138,6 +138,9 @@ export default function ApplicationHub() {
             <p>
               Built both end-to-end as the sole engineer. Designed the brands too (including a hand-drawn mascot for Loredrop).
             </p>
+            <p>
+              Beyond the shipping work: I think imaginatively, and I read people well. The first muscle comes from years of building from scratch across many contexts (five technical co-ops, three operations roles, two iOS apps solo). The second comes from leading 20+ colleges through regional conferences and serving as Speaker of Student Senate, where every conversation surfaced needs that differed from what people articulated. In a role designing AI teammates for real humans, that combination is the work.
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
