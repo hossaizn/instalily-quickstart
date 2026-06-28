@@ -124,7 +124,7 @@ export default function ApplicationHub() {
       {/* About */}
       <section className="border-t border-ink/5">
         <div className="container-prose py-16 md:py-20">
-          <p className="label mb-4">About Zul</p>
+          <p className="label mb-4">About Zulqarnayan</p>
           <h2 className="text-3xl md:text-4xl font-semibold mb-6 leading-tight">
             Solo founder, two iOS apps in production in six months.
           </h2>
@@ -150,15 +150,48 @@ export default function ApplicationHub() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-ink/5">
-        <div className="container-wide py-10 text-xs text-ink-muted leading-relaxed">
-          <p>
-            Concept built solo in a weekend. Not officially affiliated with InstaLILY. Source code:{' '}
-            <a href="https://github.com/hossaizn/instalily-quickstart" target="_blank" rel="noopener noreferrer" className="text-ink underline decoration-ink/30 hover:decoration-ink">
-              github.com/hossaizn/instalily-quickstart
+      <footer className="border-t border-ink/5 bg-paper-warm">
+        <div className="container-prose py-16 md:py-20">
+          <p className="font-serif text-2xl md:text-3xl leading-snug mb-6 text-ink">
+            Built this for the conversation the application package alone wouldn't surface.
+          </p>
+          <p className="text-lg text-ink-soft leading-relaxed mb-10">
+            Fastest way to get there:{' '}
+            <a
+              href="https://cal.com/hossainzulqarnayan/15min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink font-medium underline decoration-accent decoration-2 underline-offset-4 hover:text-accent transition-colors"
+            >
+              book 15 minutes
+            </a>
+            , or a note at{' '}
+            <a
+              href="mailto:hossainzulqarnayan@gmail.com"
+              className="text-ink font-medium underline decoration-accent decoration-2 underline-offset-4 hover:text-accent transition-colors"
+            >
+              hossainzulqarnayan@gmail.com
             </a>
             .
           </p>
+
+          <div className="pt-8 border-t border-ink/10 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 text-xs text-ink-muted leading-relaxed">
+            <p>
+              Built solo by Zulqarnayan Hossain for the InstaLILY Product Associate role &middot; June 2026
+            </p>
+            <p>
+              Source:{' '}
+              <a
+                href="https://github.com/hossaizn/instalily-quickstart"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ink underline decoration-ink/30 hover:decoration-ink transition-colors"
+              >
+                github.com/hossaizn/instalily-quickstart
+              </a>
+              {' '}&middot; Not officially affiliated with InstaLILY
+            </p>
+          </div>
         </div>
       </footer>
     </div>
