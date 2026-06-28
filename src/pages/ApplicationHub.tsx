@@ -37,10 +37,13 @@ export default function ApplicationHub() {
             <span aria-hidden>→</span>
           </Link>
           <a
-            href="#prd"
+            href="https://github.com/hossaizn/instalily-quickstart/blob/main/docs/application-prd.md"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-secondary !py-4 text-base"
           >
             Read the PRD
+            <span aria-hidden>↗</span>
           </a>
         </div>
       </section>
@@ -138,6 +141,7 @@ export default function ApplicationHub() {
           </div>
 
           <div className="flex flex-wrap gap-3">
+            <a href="./resume.html" target="_blank" rel="noopener noreferrer" className="btn-secondary">Resume</a>
             <a href="https://www.linkedin.com/in/zulqarnayan-hossain/" target="_blank" rel="noopener noreferrer" className="btn-secondary">LinkedIn</a>
             <a href="https://github.com/hossaizn" target="_blank" rel="noopener noreferrer" className="btn-secondary">GitHub</a>
             <a href="https://cal.com/hossainzulqarnayan/15min" target="_blank" rel="noopener noreferrer" className="btn-primary">Book 15 min</a>

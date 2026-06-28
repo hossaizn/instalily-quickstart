@@ -4,7 +4,14 @@
   1. Open this file in Chrome.
   2. Cmd+P → Destination: Save as PDF → Margins: Default → Background graphics: ON → Save as zulqarnayan-hossain-resume.pdf.
   3. Upload the PDF to Handshake's resume field.
-  4. The live URL (https://hossaizn.github.io/instalily-quickstart/resume.html) is shareable too if anyone asks.
+  4. The live URL (https://hossaizn.github.io/instalily-quickstart/resume.html) is shareable too.
+
+  ATS NOTES:
+  - Single-column layout.
+  - Standard section headers (PROJECTS, EXPERIENCE, EDUCATION, SKILLS).
+  - All text is text (no images, no canvas, no SVG body content).
+  - Common Unicode separators (middle-dot is widely supported).
+  - Web fonts via Google Fonts (rendered as embedded text in Chrome PDF export).
 -->
 <html lang="en">
 <head>
@@ -44,10 +51,16 @@
 
   a { color: inherit; text-decoration: none; }
 
+  p, .ship-desc, .founder-desc, .edu-desc, .exp-desc {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+  }
+
   /* Header */
   .header {
-    margin-bottom: 16pt;
-    padding-bottom: 12pt;
+    margin-bottom: 14pt;
+    padding-bottom: 11pt;
     border-bottom: 1pt solid #0a0a0a;
   }
   .name {
@@ -64,134 +77,99 @@
     font-weight: 500;
   }
   .contact {
-    margin-top: 9pt;
+    margin-top: 8pt;
     font-size: 8.5pt;
     color: #3f3f46;
     display: flex;
-    gap: 14pt;
+    gap: 13pt;
     flex-wrap: wrap;
   }
   .contact a { border-bottom: 0.5pt solid #999; }
 
-  /* Positioning */
+  /* Positioning summary */
   .positioning {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 12pt;
+    font-size: 11.5pt;
     line-height: 1.4;
-    margin-bottom: 14pt;
+    margin-bottom: 13pt;
     color: #0a0a0a;
     font-weight: 500;
+    text-align: left;
   }
   .positioning em { font-style: italic; color: #a06400; }
 
-  /* Section label */
+  /* Section */
+  .section { margin-bottom: 12pt; page-break-inside: avoid; }
   .section-label {
-    font-size: 7.5pt;
-    letter-spacing: 0.18em;
+    font-size: 8pt;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #71717a;
     margin-bottom: 6pt;
-    font-weight: 600;
+    font-weight: 700;
+    padding-bottom: 3pt;
+    border-bottom: 0.5pt solid #d4d4d8;
   }
 
-  /* Section spacing */
-  .section { margin-bottom: 13pt; page-break-inside: avoid; }
+  /* Entry (used for ships, founder, experience, education) */
+  .entry { margin-bottom: 8pt; }
+  .entry:last-child { margin-bottom: 0; }
 
-  /* Ship blocks */
-  .ship { margin-bottom: 9pt; }
-  .ship:last-child { margin-bottom: 0; }
-  .ship-head {
+  .entry-head {
     display: flex;
     align-items: baseline;
     gap: 8pt;
     flex-wrap: wrap;
     margin-bottom: 2pt;
   }
-  .ship-name {
+  .entry-name {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 12pt;
+    font-size: 11.5pt;
     font-weight: 600;
     color: #0a0a0a;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
   }
-  .ship-status {
-    font-size: 8pt;
+  .entry-meta {
+    font-size: 8.5pt;
     color: #71717a;
     font-style: italic;
   }
-  .ship-link {
+  .entry-link {
     font-size: 8pt;
     color: #a06400;
     margin-left: auto;
     border-bottom: 0.5pt solid #a06400;
   }
-  .ship-tagline {
+  .entry-tagline {
     font-style: italic;
     color: #3f3f46;
     margin-bottom: 3pt;
   }
-  .ship-desc {
+  .entry-desc {
     color: #0a0a0a;
     margin-bottom: 4pt;
   }
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3.5pt;
-  }
-  .chip {
-    font-size: 7.5pt;
-    padding: 1.5pt 6pt;
-    background: #f4f1ea;
+
+  .skills-line {
     color: #0a0a0a;
-    border-radius: 99pt;
-    font-weight: 500;
-    line-height: 1.2;
-  }
-
-  /* Two-column row for founder + edu */
-  .row-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14pt;
-    margin-bottom: 13pt;
-  }
-
-  .founder-name, .edu-name {
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 11pt;
-    font-weight: 600;
-    margin-bottom: 1pt;
-  }
-  .founder-meta, .edu-meta {
-    font-size: 8.5pt;
-    color: #71717a;
-    margin-bottom: 4pt;
-  }
-  .founder-desc, .edu-desc { color: #0a0a0a; }
-
-  /* Stack */
-  .stack-row {
-    display: flex;
-    gap: 10pt;
-    align-items: baseline;
+    line-height: 1.5;
     margin-bottom: 3pt;
+    text-align: left;
   }
-  .stack-cat {
-    font-size: 7.5pt;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+  .skills-line strong {
     color: #71717a;
-    flex: 0 0 56pt;
     font-weight: 600;
-    padding-top: 1pt;
+    font-size: 8pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-block;
+    min-width: 60pt;
   }
-  .stack-items { font-size: 9pt; color: #0a0a0a; flex: 1; }
 
   /* Footer */
   .footer {
-    margin-top: 13pt;
-    padding-top: 9pt;
+    margin-top: 11pt;
+    padding-top: 8pt;
     border-top: 1pt solid #0a0a0a;
     display: flex;
     justify-content: space-between;
@@ -204,6 +182,7 @@
     color: #3f3f46;
     line-height: 1.45;
     flex: 1;
+    text-align: left;
   }
   .footer-meta {
     font-size: 7.5pt;
@@ -226,97 +205,82 @@
   </div>
 
   <div class="positioning">
-    Two iOS apps shipped end-to-end in six months. Solo developer through every layer, Swift to App Review to backend. <em>Built a self-serve InstaWorker Quickstart concept for InstaLILY this weekend as the artifact for this application.</em>
+    Two iOS apps shipped end-to-end in six months. Solo developer through every layer: Swift, App Review, StoreKit, backend, AI. <em>Built a self-serve InstaWorker Quickstart concept for InstaLILY this weekend as the artifact for this application.</em>
   </div>
 
   <div class="section">
-    <p class="section-label">Recent ships</p>
+    <p class="section-label">Projects</p>
 
-    <div class="ship">
-      <div class="ship-head">
-        <span class="ship-name">InstaLILY Quickstart</span>
-        <span class="ship-status">built for this application</span>
-        <a class="ship-link" href="https://hossaizn.github.io/instalily-quickstart">live demo &rarr;</a>
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-name">InstaLILY Quickstart</span>
+        <span class="entry-meta">June 2026 &middot; built for this application</span>
+        <a class="entry-link" href="https://hossaizn.github.io/instalily-quickstart">live demo &rarr;</a>
       </div>
-      <p class="ship-tagline">Self-serve InstaWorker spec generator. A Product Associate audition.</p>
-      <p class="ship-desc">Five-screen flow that turns a frontline operator workflow description into a draft InstaWorker spec, scored honestly against the only public InstaLILY case study. Includes a 17-section product spec, a strategic PRD, and an adversarial-critique pass on my own work. <a href="https://github.com/hossaizn/instalily-quickstart" style="color:#a06400;border-bottom:0.5pt solid #a06400;">Source code public.</a></p>
-      <div class="chips">
-        <span class="chip">React 19 &middot; TypeScript</span>
-        <span class="chip">Tailwind &middot; Framer Motion</span>
-        <span class="chip">Smart templating</span>
-        <span class="chip">GitHub Pages</span>
-      </div>
+      <p class="entry-tagline">Self-serve InstaWorker spec generator. A Product Associate audition.</p>
+      <p class="entry-desc">Five-screen flow that turns a frontline operator workflow description into a draft InstaWorker spec, scored honestly against the only public InstaLILY case study. Includes a 17-section product spec, a strategic PRD, and an adversarial-critique pass on my own work. Source code public at github.com/hossaizn/instalily-quickstart. Stack: React 19, TypeScript, Tailwind, Framer Motion, GitHub Pages.</p>
     </div>
 
-    <div class="ship">
-      <div class="ship-head">
-        <span class="ship-name">Primrose &amp; Eve</span>
-        <span class="ship-status">live on App Store</span>
-        <a class="ship-link" href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618">App Store &rarr;</a>
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-name">Primrose &amp; Eve</span>
+        <span class="entry-meta">June 2026 &middot; live on Apple App Store</span>
+        <a class="entry-link" href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618">App Store &rarr;</a>
       </div>
-      <p class="ship-tagline">Doctor-visit advocacy tool for perimenopause.</p>
-      <p class="ship-desc">Symptoms tracked entirely on-device. Statistical Pattern Engine runs locally to surface correlations. On-demand Smart Report compresses 90 days of data into three clear asks for the doctor. <strong>No central database of user data exists, by architecture.</strong> Built solo end-to-end including App Review process.</p>
-      <div class="chips">
-        <span class="chip">On-device Pattern Engine</span>
-        <span class="chip">Privacy-first architecture</span>
-        <span class="chip">Smart Report (on-demand)</span>
-        <span class="chip">StoreKit 2</span>
-        <span class="chip">Cloudflare Workers</span>
-        <span class="chip">DeviceCheck</span>
-      </div>
+      <p class="entry-tagline">Doctor-visit advocacy app for perimenopause. Solo-built, end to end.</p>
+      <p class="entry-desc">Symptoms tracked entirely on-device. Statistical Pattern Engine runs locally to surface correlations. On-demand Smart Report compresses ninety days of data into three clear asks for the doctor. No central database of user data exists, by architecture. Solo-shipped through Apple App Review process. Stack: Swift, SwiftUI, StoreKit 2, Cloudflare Workers backend, on-device AI report generation, DeviceCheck for abuse prevention.</p>
     </div>
 
-    <div class="ship">
-      <div class="ship-head">
-        <span class="ship-name">Loredrop</span>
-        <span class="ship-status">in TestFlight</span>
-        <a class="ship-link" href="https://testflight.apple.com/join/uCazTMt2">Try on TestFlight &rarr;</a>
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-name">Loredrop</span>
+        <span class="entry-meta">May 2026 &middot; in Apple TestFlight</span>
+        <a class="entry-link" href="https://testflight.apple.com/join/uCazTMt2">TestFlight &rarr;</a>
       </div>
-      <p class="ship-tagline">Daily voice-ritual app where small crews build a chain story together, one voice at a time.</p>
-      <p class="ship-desc">Custom multi-source audio stitching pipeline (FFmpeg) on the backend. Server-driven daily loop orchestrates per-crew turn order and synchronized reveal windows. Realtime crew-state sync, APNs-driven engagement. Designed brand identity from scratch including a hand-drawn mascot.</p>
-      <div class="chips">
-        <span class="chip">Audio stitching (FFmpeg)</span>
-        <span class="chip">Server-driven daily loop</span>
-        <span class="chip">Realtime crew-state sync</span>
-        <span class="chip">APNs orchestration</span>
-        <span class="chip">Swift 6 &middot; SwiftUI</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="row-2">
-    <div>
-      <p class="section-label">Founder</p>
-      <p class="founder-name">Quarter AI Solutions</p>
-      <p class="founder-meta">Founder &middot; 2026 &ndash; present</p>
-      <p class="founder-desc">Personal-lab studio shipping consumer iOS apps and a parallel SMB AI-consultancy track. Two apps in production, more in active build. Solo on product, design, engineering, brand, App Review. Operating thesis: AI serving people, not replacing them.</p>
-    </div>
-    <div>
-      <p class="section-label">Education</p>
-      <p class="edu-name">Bachelor of Business Administration</p>
-      <p class="edu-meta">December 2025 graduate &middot; Cum Laude &middot; Senior 100 leadership</p>
-      <p class="edu-desc">5 co-ops + 3 campus jobs across degree. Cross-functional consulting projects, undergraduate leadership conference, founders' fellowship.</p>
+      <p class="entry-tagline">Daily voice-ritual app where small crews build a chain story together, one voice at a time.</p>
+      <p class="entry-desc">Custom multi-source audio stitching pipeline (FFmpeg) on the backend. Server-driven daily loop orchestrates per-crew turn order and synchronized reveal windows. Realtime crew-state sync, APNs-driven engagement. Designed brand identity from scratch including hand-drawn mascot. Stack: Swift 6, SwiftUI, Supabase, Postgres, Edge Functions.</p>
     </div>
   </div>
 
   <div class="section">
-    <p class="section-label">Stack</p>
-    <div class="stack-row">
-      <span class="stack-cat">Mobile</span>
-      <span class="stack-items">Swift 6 &middot; SwiftUI &middot; UIKit &middot; async/await &middot; StoreKit 2 &middot; APNs &middot; DeviceCheck &middot; App Review</span>
+    <p class="section-label">Experience</p>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-name">Quarter AI Solutions</span>
+        <span class="entry-meta">Founder &middot; January 2026 &ndash; present</span>
+      </div>
+      <p class="entry-desc">Founded a personal-lab studio shipping consumer iOS apps and a parallel SMB AI-consultancy track. Two apps in production, more in active build. Solo on product, design, engineering, brand, and App Review. Operating thesis: AI serving people, not replacing them. Every product designed to make people more capable, not less needed.</p>
     </div>
-    <div class="stack-row">
-      <span class="stack-cat">Web</span>
-      <span class="stack-items">TypeScript &middot; React 19 &middot; Tailwind &middot; Vite &middot; Next.js &middot; Framer Motion</span>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-name">Earlier roles (undergrad)</span>
+        <span class="entry-meta">2022 &ndash; 2025</span>
+      </div>
+      <p class="entry-desc">Five co-op rotations and three on-campus roles across operations, customer success, project coordination, and cross-functional consulting work. Pattern: chose roles that let me own a metric and ship something visible rather than rotate between abstract tasks. Active in undergraduate leadership conference, founders' fellowship, and cross-team consulting projects. Full role-by-role detail on LinkedIn.</p>
     </div>
-    <div class="stack-row">
-      <span class="stack-cat">Backend</span>
-      <span class="stack-items">Cloudflare Workers &middot; Supabase &middot; Postgres &middot; Edge Functions &middot; FFmpeg pipelines &middot; pg_net &middot; GitHub Actions</span>
+  </div>
+
+  <div class="section">
+    <p class="section-label">Education</p>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-name">Bachelor of Business Administration (BBA)</span>
+        <span class="entry-meta">December 2025 graduate &middot; Cum Laude</span>
+      </div>
+      <p class="entry-desc">Senior 100 leadership recognition. Active in cross-functional consulting projects, founders' fellowship, and undergraduate leadership conferences.</p>
     </div>
-    <div class="stack-row">
-      <span class="stack-cat">Product</span>
-      <span class="stack-items">Product specs &middot; PRDs &middot; roadmapping &middot; adversarial critique on own work &middot; API + integration design</span>
-    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-label">Skills</p>
+    <p class="skills-line"><strong>Mobile</strong> Swift 6, SwiftUI, UIKit, async/await, StoreKit 2, APNs, DeviceCheck, App Review process</p>
+    <p class="skills-line"><strong>Web</strong> TypeScript, React 19, Tailwind, Vite, Next.js, Framer Motion</p>
+    <p class="skills-line"><strong>Backend</strong> Cloudflare Workers, Supabase, Postgres, Edge Functions, FFmpeg pipelines, pg_net, GitHub Actions</p>
+    <p class="skills-line"><strong>Product</strong> Product specs, PRDs, roadmapping, adversarial critique on own work, API and integration design</p>
+    <p class="skills-line"><strong>Design</strong> Figma, brand systems, type pairing, component libraries, print-ready visual artifacts</p>
   </div>
 
   <div class="footer">
