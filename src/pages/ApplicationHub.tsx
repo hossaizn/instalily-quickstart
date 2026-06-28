@@ -107,12 +107,12 @@ export default function ApplicationHub() {
             One-page PRD covering the problem, scope, success metrics, 30/60/90 roadmap, and the risk I can't disprove from the outside.
           </p>
           <a
-            href="./prd.pdf"
+            href="https://github.com/hossaizn/instalily-quickstart/blob/main/docs/application-prd.md"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary"
           >
-            Read the PRD (PDF)
+            Read the PRD
             <span aria-hidden>↗</span>
           </a>
         </div>
