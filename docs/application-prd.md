@@ -90,7 +90,7 @@ These are the targets I'd propose, then measure honestly. None are fabricated; t
 
 **v3:** Replace templated narrative with LLM composition citing specific internal deployments. Auto-route qualified prospects to the closest-fit AE based on archetype × vertical × volume. Feedback loop: prospect outcomes flow back into the InstaBrain.
 
-v2 and v3 are intentionally smaller in scope than a typical kickoff might propose. The first 30 days in the role should be customer interviews, not feature shipping.
+v2 and v3 are sketched here as direction, not as committed scopes.
 
 ---
 
@@ -118,7 +118,7 @@ The questions I can't answer from outside the company, and the ones I'd want to 
 
 A first-round conversation. I built this in a weekend because the application package alone wouldn't have surfaced what I'd actually do in the role.
 
-If the Quickstart concept resonates, I'd want to dig into the open questions above and pressure-test the proposal against your internal context. If it doesn't, I'd want to know what missed.
+If the Quickstart concept resonates, I'd want to dig into the open questions above and pressure-test the proposal against your internal context.
 
 **[Try the live demo →](https://hossaizn.github.io/instalily-quickstart/quickstart)**
 
