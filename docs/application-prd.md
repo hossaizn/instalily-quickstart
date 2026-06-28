@@ -90,7 +90,7 @@ These are the targets I'd propose, then measure honestly. None are fabricated; t
 
 **v3:** Replace templated narrative with LLM composition citing specific internal deployments. Auto-route qualified prospects to the closest-fit AE based on archetype × vertical × volume. Feedback loop: prospect outcomes flow back into the InstaBrain.
 
-v2 and v3 are intentionally smaller than a typical kickoff might propose. The candidate's first 30 days should be customer interviews, not feature shipping.
+v2 and v3 are intentionally smaller in scope than a typical kickoff might propose. The first 30 days in the role should be customer interviews, not feature shipping.
 
 ---
 
@@ -99,8 +99,6 @@ v2 and v3 are intentionally smaller than a typical kickoff might propose. The ca
 The biggest gap in this artifact: I haven't talked to a real frontline operator. The archetypes, dropdown options, and output framing are derived from InstaLILY's published materials, the SRS case study, and my own reasoning. That's research, not validation.
 
 In the role, the first thing I'd do is line up five operator calls across the four archetypes (warm intros via InstaLILY's existing customer relationships). The artifact would get revised based on what was wrong about each archetype. Most assumptions in the current build would be partially incorrect; that's what the calls would surface.
-
-This is the honest answer if anyone asks *"have you talked to a real operator?"*: not yet, here's why, here's what I'd do first.
 
 ---
 
@@ -118,9 +116,9 @@ The questions I can't answer from outside the company, and the ones I'd want to 
 
 ## What this submission is asking for
 
-A first-round conversation. I built this in a weekend because the application package alone wouldn't have surfaced what I'd actually do in the role. The artifact is the demonstration; the resume is the receipt.
+A first-round conversation. I built this in a weekend because the application package alone wouldn't have surfaced what I'd actually do in the role.
 
-If the Quickstart concept resonates, I'd want to dig into the open questions above and pressure-test the proposal against your internal context. If it doesn't, I'd want to know why; that conversation is more useful to me than another rejection email.
+If the Quickstart concept resonates, I'd want to dig into the open questions above and pressure-test the proposal against your internal context. If it doesn't, I'd want to know what missed.
 
 **[Try the live demo →](https://hossaizn.github.io/instalily-quickstart/quickstart)**
 
