@@ -26,10 +26,10 @@ export default function ApplicationHub() {
       <section className="container-prose pt-16 md:pt-24 pb-12">
         <p className="label mb-5">Product Associate · InstaLILY</p>
         <h1 className="text-4xl md:text-6xl font-semibold leading-[1.02] mb-6 tracking-tight">
-          I built the missing top-of-funnel for InstaLILY in a weekend.
+          A self-serve top-of-funnel concept for InstaLILY, built in a weekend.
         </h1>
-        <p className="text-xl text-ink-soft leading-relaxed font-serif italic">
-          A self-serve InstaWorker Quickstart that turns "Book a Demo" into a path that captures the ~97% of visitors who aren't ready to talk to sales yet.
+        <p className="text-xl text-ink leading-relaxed font-serif">
+          The InstaWorker Quickstart is a parallel path to "Book a Demo," scoped to capture the ~97% of visitors who aren't sales-ready on first visit.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
           <Link to="/quickstart" className="btn-primary !py-4 text-base">
@@ -53,15 +53,15 @@ export default function ApplicationHub() {
         <div className="container-prose py-16 md:py-20">
           <p className="label mb-4">Why this, and why now</p>
           <h2 className="text-3xl md:text-4xl font-semibold mb-8 leading-tight">
-            Every CTA on instalily.ai routes to "Book a Demo." That's the whole funnel.
+            InstaLILY's site converts at industry-benchmark rates. The Quickstart serves the segment that benchmark leaves on the table.
           </h2>
 
-          <div className="space-y-6 text-lg text-ink-soft leading-relaxed">
+          <div className="space-y-6 text-lg text-ink leading-relaxed font-serif">
             <p>
-              For the visitor who's already decided, that works. For the ~97% who are in research mode (the parts manager Googling "AI for distribution," the claims VP comparing vendors), there's no path. They bounce.
+              The current funnel works well for sales-ready visitors: every CTA routes them straight to Book a Demo, which converts at the 2-3% rate typical for enterprise B2B SaaS. That's the right shape for high-intent traffic.
             </p>
             <p>
-              The Quickstart is the parallel path. <span className="text-ink font-medium">Not a replacement for the demo button, but an alternative for the visitor that button doesn't serve.</span> Sixty seconds of self-serve, and they leave with a draft InstaWorker spec they can show their boss.
+              The opportunity is the other ~97% (the parts manager Googling "AI for distribution," the claims VP comparing vendors) who are researching but not yet ready to commit a sales call. Today they leave with nothing. <span className="font-semibold">The Quickstart is a parallel path that complements the demo button, scoped specifically for that visitor.</span> Sixty seconds of self-serve, and they leave with a draft InstaWorker spec they can share internally.
             </p>
           </div>
 
@@ -71,29 +71,29 @@ export default function ApplicationHub() {
             <p className="font-serif text-xl italic leading-snug text-ink mb-5">
               "Adding friction before Book a Demo hurts conversion. The whole funnel theory says reduce steps, not add them."
             </p>
-            <p className="text-base text-ink-soft leading-relaxed mb-4">Four reasons I'd defend this in a roadmap review:</p>
+            <p className="text-base text-ink leading-relaxed mb-4 font-serif">Four reasons I'd defend this in a roadmap review:</p>
 
-            <ol className="space-y-4 text-base text-ink-soft leading-relaxed">
+            <ol className="space-y-4 text-base text-ink leading-relaxed font-serif">
               <li>
-                <span className="text-ink font-semibold">1. Different visitor intent → different paths.</span>{' '}
-                The Book a Demo button captures the 2-3% who are ready for sales (industry benchmark for enterprise B2B SaaS). The other ~97% bounce. The Quickstart captures them with a useful artifact, not a sales call. Total qualified lead volume goes up.
+                <span className="font-semibold">1. Different visitor intent → different paths.</span>{' '}
+                The current Book a Demo CTA converts the 2-3% of sales-ready visitors well. The Quickstart serves the ~97% who aren't there yet, adding to total qualified lead volume rather than competing with the existing channel.
               </li>
               <li>
-                <span className="text-ink font-semibold">2. Self-qualification is a feature.</span>{' '}
-                Some visitors shouldn't book: wrong vertical, too small, wrong use case. The tool surfaces that without burning a sales hour. The demos that do book are pre-qualified with context.
+                <span className="font-semibold">2. Self-qualification is a feature.</span>{' '}
+                Some research-mode visitors aren't a fit (wrong vertical, too small, wrong use case). The tool helps them self-discover that without taking sales team time, while the demos that do book arrive pre-qualified with context.
               </li>
               <li>
-                <span className="text-ink font-semibold">3. Specs are shareable; demos are not.</span>{' '}
-                The output spec gets sent rep → boss → procurement. Multi-stakeholder buying motion happens before InstaLILY ever pays for a sales touch. A demo call reaches one person at a time.
+                <span className="font-semibold">3. Specs are shareable; demo calls aren't.</span>{' '}
+                The output spec is built to be forwarded rep → boss → procurement, generating multi-stakeholder buying motion alongside the direct demo channel. Each shared spec extends reach without requiring additional sales touches.
               </li>
               <li>
-                <span className="text-ink font-semibold">4. Sales velocity goes up.</span>{' '}
-                A demo booked via Quickstart opens with: "I see you're a parts manager at 200-person NetSuite shop, quote generation is your pain. Let me show you Sarah at SRS solving exactly that." Not 15 minutes of discovery.
+                <span className="font-semibold">4. AE hours become more productive.</span>{' '}
+                Demos booked via Quickstart arrive with archetype, vertical, tool stack, and workflow already captured. AEs can open with specific reference customers instead of starting with discovery, making each booked hour higher-value.
               </li>
             </ol>
 
-            <p className="text-sm text-ink-muted mt-6 italic leading-relaxed">
-              Honest caveat: I don't have your internal close-rate or sales-cycle data. You may have already considered this and decided against it. If so, I'd want to know why. That's the right second-round conversation.
+            <p className="text-sm text-ink-soft mt-6 italic leading-relaxed font-serif">
+              Honest caveat: I don't have InstaLILY's internal close-rate or sales-cycle data, and you may have already evaluated this approach. If you have, I'd want to understand what shaped that call. That's exactly the kind of conversation I'd hope to have.
             </p>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function ApplicationHub() {
           <h2 className="text-3xl md:text-4xl font-semibold mb-5 leading-tight">
             Make the Learning Layer Visible
           </h2>
-          <p className="text-lg text-ink-soft leading-relaxed mb-8">
+          <p className="text-lg text-ink leading-relaxed mb-8 font-serif">
             One-page PRD covering the problem, scope, success metrics, 30/60/90 roadmap, and the risk I can't disprove from the outside.
           </p>
           <a
@@ -128,12 +128,12 @@ export default function ApplicationHub() {
           <h2 className="text-3xl md:text-4xl font-semibold mb-6 leading-tight">
             Solo founder, two iOS apps in production in six months.
           </h2>
-          <div className="space-y-4 text-lg text-ink-soft leading-relaxed mb-8">
+          <div className="space-y-4 text-lg text-ink leading-relaxed mb-8 font-serif">
             <p>
-              <a href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618" target="_blank" rel="noopener noreferrer" className="text-ink underline decoration-ink/30 hover:decoration-ink">Primrose &amp; Eve</a>, live on the App Store. A privacy-first doctor-visit advocacy app for perimenopause where user data never leaves the phone. On-device statistical Pattern Engine, AI-generated Smart Report layer, StoreKit 2, Cloudflare Workers, DeviceCheck.
+              <a href="https://apps.apple.com/us/app/primrose-eve-menopause/id6778547618" target="_blank" rel="noopener noreferrer" className="underline decoration-ink/30 hover:decoration-ink">Primrose &amp; Eve</a>, live on the App Store. A privacy-first doctor-visit advocacy app for perimenopause where user data never leaves the phone. On-device statistical Pattern Engine, AI-generated Smart Report layer, StoreKit 2, Cloudflare Workers, DeviceCheck.
             </p>
             <p>
-              <a href="https://testflight.apple.com/join/uCazTMt2" target="_blank" rel="noopener noreferrer" className="text-ink underline decoration-ink/30 hover:decoration-ink">Loredrop</a>, in TestFlight. A daily social ritual app built around a habit-forming engagement loop. Small crews take turns recording one voice at a time over a day; the full story unlocks together at a shared daily reveal. Custom FFmpeg audio stitching pipeline keeps every crew member in realtime sync.
+              <a href="https://testflight.apple.com/join/uCazTMt2" target="_blank" rel="noopener noreferrer" className="underline decoration-ink/30 hover:decoration-ink">Loredrop</a>, in TestFlight. A daily social ritual app built around a habit-forming engagement loop. Small crews take turns recording one voice at a time over a day; the full story unlocks together at a shared daily reveal. Custom FFmpeg audio stitching pipeline keeps every crew member in realtime sync.
             </p>
             <p>
               Built both end-to-end as the sole engineer. Designed the brands too (including a hand-drawn mascot for Loredrop).
@@ -189,7 +189,7 @@ export default function ApplicationHub() {
               >
                 github.com/hossaizn/instalily-quickstart
               </a>
-              {' '}&middot; Not officially affiliated with InstaLILY
+              . Not officially affiliated with InstaLILY.
             </p>
           </div>
         </div>
